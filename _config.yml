@@ -4,7 +4,8 @@ email:
 description: "Artificial Intelligence."
 baseurl: ""
 url: "http://mserkantan.github.io"
-github_username:  neurocats
+github_username:  "mserkantan"
+twitter_username: "mserkantan"
 
 # Build settings
 markdown: kramdown
