@@ -10,6 +10,7 @@ twitter_username: "mserkantan"
 # Build settings
 markdown: kramdown
 permalink: pretty
+exclude: [vendor]
 
 highlighter: rouge
 kramdown:
