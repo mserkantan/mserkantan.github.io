@@ -6,4 +6,5 @@ excerpt: "Günlük hayatta karşılaştığımız hatta bir parçası olduğumuz
 date:   2021-7-14 22:00:00
 ---
 
-It's Funny  
+Doğada canlılar, basit davranışlarıyla ortak bir amaç etrafında birleşip çalıştıklarında, büyük kazanımlar elde ederler. Doğadaki, sürü diye tabir edebileceğimiz bu etkileşim, günlük hayatta tek bir pencereden baktığımızda zor gözüken problemlere verimli çözümler getirebilir. Ancak beşeri sistemlere girmeden önce, bazı temel soruların cevaplarını, doğadan elde etmeye çalışalım.
+
