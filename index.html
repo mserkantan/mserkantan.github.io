@@ -27,7 +27,7 @@
     .player{pointer-events:auto;width:356px;max-width:100%;aspect-ratio:16/9;margin:22px 0 0 4px;border-radius:6px;overflow:hidden;background:#d8d2c5;box-shadow:0 0 0 1px var(--line)}
     .player iframe{width:100%;height:100%;border:0;display:block}
     .player:not([hidden]){animation:appear .6s both}
-    .alt-link{pointer-events:auto;display:block;margin:18px 0 0 4px;font-size:11px;color:var(--muted);text-decoration:none}.alt-link:hover{color:var(--copper)}
+    .alt-links{pointer-events:auto;display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0 4px;font-size:11px}.alt-links a{color:var(--muted);text-decoration:none}.alt-links a:hover{color:var(--copper)}
     .artwork{position:absolute;width:min(50vw,720px);height:auto;aspect-ratio:1;right:-1vw;top:50%;transform:translateY(-49%);pointer-events:none}.moon-art{width:100%;height:100%;overflow:visible}.orbit{stroke:#b0a38e;stroke-width:.6;fill:none;opacity:.5}.caption{position:absolute;bottom:0;right:6%;font-size:9px;letter-spacing:2px;color:var(--muted);writing-mode:vertical-rl;transform:translateY(-25px)}
     footer{border-top:1px solid var(--line);padding-top:19px;color:var(--muted);font-size:11px;letter-spacing:.4px}footer p{margin:0}.footer-left{display:flex;align-items:center;gap:11px}.tiny-moon{height:10px;width:10px;border-radius:50%;box-shadow:inset 3px -1px 0 var(--copper);transform:rotate(-25deg)}.credit{font-size:10px;letter-spacing:.2px}.credit i{font-family:Georgia,serif}
 
@@ -42,7 +42,7 @@
     .about .meta{font-size:12px;color:var(--muted);letter-spacing:.2px}
     .about a{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}.about a:hover{text-decoration-color:var(--copper)}
 
-    @media(max-width:760px){.poem{padding:4px 0 54px;font-size:22px;line-height:1.55}.poem::before{margin-bottom:25px}.poem .last-line{margin-top:20px}.about{grid-template-columns:1fr;gap:36px;padding-bottom:60px}.about h2{font-size:27px}}
+    @media(max-width:760px){.poem{padding:4px 0 54px;font-size:min(22px,4.9vw);line-height:1.6}.poem .last-line{text-wrap:balance}.poem::before{margin-bottom:25px}.poem .last-line{margin-top:20px}.about{grid-template-columns:1fr;gap:36px;padding-bottom:60px}.about h2{font-size:27px}}
     @media(min-width:1600px){.copy{padding-left:80px}}
     @media(max-width:760px){.page{padding:25px 7vw 20px}header{gap:10px}.signature{font-size:12px}.edition{font-size:9px;letter-spacing:1.4px;gap:8px}main{min-height:700px;padding:64px 0 45px;align-items:flex-start}.copy{width:100%;padding-left:0}.player{width:100%}.eyebrow{font-size:9px;margin-bottom:29px}h1{font-size:clamp(88px,20vw,150px);position:relative;z-index:2}h1 .moon-word{margin-left:14vw}.artist{margin-top:22px;margin-bottom:260px;font-size:12px}.artwork{width:83vw;right:-12vw;top:177px;transform:none;z-index:1}.caption{display:none}.listen{font-size:12px}footer{font-size:10px;align-items:flex-start;gap:18px;padding-top:18px}.credit{max-width:150px;text-align:right;line-height:1.6;font-size:9px}}
     @media(max-width:380px){main{min-height:655px}.artist{margin-bottom:220px}.edition{letter-spacing:1px}}
@@ -61,7 +61,7 @@
         <p class="artist">LP</p>
         <button class="listen" id="listen" type="button" aria-label="Harvest Moon’u çal" aria-pressed="false"><span class="play-icon" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 14"><path d="M1 1 11 7 1 13Z"/></svg><svg class="i-pause" viewBox="0 0 12 14"><path d="M1 1h3.5v12H1zM7.5 1H11v12H7.5z"/></svg></span><span class="listen-label">Şarkıyı çal</span></button>
         <div class="player" id="player-wrap" hidden><div id="yt"></div></div>
-        <a class="alt-link" href="https://music.apple.com/us/album/harvest-moon-single/6808232561" target="_blank" rel="noopener noreferrer">Apple Music’te aç ↗</a>
+        <p class="alt-links"><a href="https://open.spotify.com/search/LP%20Harvest%20Moon" target="_blank" rel="noopener noreferrer">Spotify’da dinle ↗</a><a href="https://music.apple.com/us/album/harvest-moon-single/6808232561" target="_blank" rel="noopener noreferrer">Apple Music’te dinle ↗</a></p>
       </div>
       <div class="artwork" aria-hidden="true">
         <svg class="moon-art" viewBox="0 0 700 700">
