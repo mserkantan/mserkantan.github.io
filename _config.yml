@@ -20,3 +20,4 @@ kramdown:
 # Yayına alınmayacak dosyalar
 exclude:
   - CLAUDE.md
+  - supabase

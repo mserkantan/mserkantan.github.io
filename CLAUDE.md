@@ -16,6 +16,12 @@ Kullanıcı Türkçe konuşuyor; yanıtları Türkçe ver.
   - Sertifika bir gün “1 of 3 — Certificate Requested”ta takılırsa: Pages’te custom domain’i `serkantan.org` ↔ `www.serkantan.org` arasında iki tur değiştirip `www`’da bırakmak işe yaradı. Aynı alanı silip eklemek yaramadı; sık deneme Let’s Encrypt limitlerine takılır.
   - Pages’te domain değişince GitHub `CNAME` dosyasına commit atar; sonrasında yerel repoyu güncelle.
 - Ziyaretçi sayacı: GoatCounter (çerezsiz), `index.html` sonundaki script, panel `mserkantan.goatcounter.com`.
+- Yorumlar: Supabase, proje “mserkantan's Project” (ref `lyjgwzatxasvwopmsect`, eu-west-1), tablo `public.comments`. Kurulum SQL’i `supabase/comments.sql` (Jekyll’de exclude).
+  - Ziyaretçi (anon) sadece onaylı yorumları okur ve onaysız yorum ekler; güncelleyemez, silemez, kendini onaylayamaz (RLS + kolon yetkileri, test edildi).
+  - `index.html`’de sadece publishable key var (herkese açık olması normal). Secret/service_role key’i asla sayfaya koyma.
+  - Onaylama: Supabase → Table Editor → `comments` → `approved` kutusunu işaretle. Silmek de oradan.
+  - Ücretsiz Supabase projeleri uzun süre istek almazsa duraklatılabilir; her sayfa açılışı yorumları okuduğu için normalde aktif kalır. Yorumlar “yüklenemedi” derse önce projenin durumuna bak.
+  - Tasarım kontrolü için `?onizleme` örnek yorumlarla açar (gerçek veriye dokunmaz).
 
 ## Bekleyen işler
 Şu an yok.
@@ -37,6 +43,7 @@ Tasarım (kullanıcının kendi tasarımı, koru):
   > Gönlümüzü vermişken…
   > *Hâlâ ortak şeylerimizin olabilmesi ne güzel değil mi?*
 
+- Şiirin altında “Yorumlar” butonu; yorumlar ve yorum formu `<dialog>` içinde açılır (masaüstünde ortada kart, mobilde alttan panel). `#yorumlar` linki pencereyi doğrudan açar.
 - Altta “Şarkı” ve “Sanatçı” bölümleri (kısa, kaynakla doğrulanmış bilgiler)
 
 Ayrıca outputs’ta bir de `template.html` vardı: Serkan’ın kişisel sayfası için ileride kullanılabilecek tam bir şablon (hakkında / projeler / iletişim). Şu an yayında değil.
@@ -48,6 +55,7 @@ Değişecek yerler (`index.html`):
 - `VIDEO_ID` (resmi YouTube klibi), Spotify ve Apple Music linkleri (doğrudan şarkı linki; Spotify’daki `?si=` takip parametresini at)
 - “Şarkı” / “Sanatçı” metinleri ve footer’daki “Orijinal” satırı (cover değilse kaldır)
 - Footer’daki paylaşım tarihi: `<time class="posted" datetime="YYYY-MM-DD">` (hem `datetime` hem görünen metin)
+- Yorum script’indeki `PAGE_ID` (örn. `2026-11`): her ayın yorumları ayrı tutulur, eski ayınkiler veritabanında kalır
 - Dizeler kullanıcıdan gelir; kendin yazma.
 
 Kurallar:
