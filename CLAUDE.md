@@ -18,7 +18,7 @@ Kullanıcı Türkçe konuşuyor; yanıtları Türkçe ver.
 - Ziyaretçi sayacı: GoatCounter (çerezsiz), `index.html` sonundaki script, panel `mserkantan.goatcounter.com`.
 
 ## Bekleyen işler
-1. **Spotify linki:** Şu an `https://open.spotify.com/search/LP%20Harvest%20Moon` arama linki. Kullanıcı doğrudan şarkı linkini verirse `index.html` içindeki `.alt-links` bölümünde değiştir.
+Şu an yok.
 
 ## Site: “Bir ay, bir şarkı”
 Ana sayfa her ay tek bir şarkıyı öne çıkaran bir sayfa. Şu anki: **Ekim 2026 — LP, “Harvest Moon”** (Neil Young cover’ı, 16 Ekim 2026 single’ı).
@@ -45,7 +45,7 @@ Ayrıca outputs’ta bir de `template.html` vardı: Serkan’ın kişisel sayfas
 Değişecek yerler (`index.html`):
 - `<title>`, `<meta name="description">`, `.eyebrow` içindeki ay (`10 / 26`), `.caption` (“EKİM 2026 — …”)
 - `h1` (şarkı adı), `.artist`
-- `VIDEO_ID` (resmi YouTube klibi), Spotify ve Apple Music linkleri
+- `VIDEO_ID` (resmi YouTube klibi), Spotify ve Apple Music linkleri (doğrudan şarkı linki; Spotify’daki `?si=` takip parametresini at)
 - “Şarkı” / “Sanatçı” metinleri ve footer’daki “Orijinal” satırı (cover değilse kaldır)
 - Footer’daki paylaşım tarihi: `<time class="posted" datetime="YYYY-MM-DD">` (hem `datetime` hem görünen metin)
 - Dizeler kullanıcıdan gelir; kendin yazma.
