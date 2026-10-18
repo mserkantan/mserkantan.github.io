@@ -44,7 +44,7 @@ Tasarım (kullanıcının kendi tasarımı, koru):
   > Gönlümüzü vermişken…
   > *Hâlâ ortak şeylerimizin olabilmesi ne güzel değil mi?*
 
-- Şiirin altında “Yorumlar” butonu; yorumlar ve yorum formu `<dialog>` içinde açılır (masaüstünde ortada kart, mobilde alttan panel). `#yorumlar` linki pencereyi doğrudan açar.
+- Sağ kenarda yarısı ekran dışında duran küçük bir “top” (`.comments-fab`, onaylı yorum sayısı rozetli; hover’da biraz dışarı kayar, mobilde altta ve kenar boşluğu kadar görünür); yorumlar ve yorum formu `<dialog>` içinde açılır (masaüstünde ortada kart, mobilde alttan panel). `#yorumlar` linki pencereyi doğrudan açar.
 - Altta “Şarkı” ve “Sanatçı” bölümleri (kısa, kaynakla doğrulanmış bilgiler)
 
 Ayrıca outputs’ta bir de `template.html` vardı: Serkan’ın kişisel sayfası için ileride kullanılabilecek tam bir şablon (hakkında / projeler / iletişim). Şu an yayında değil.
