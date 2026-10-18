@@ -44,6 +44,7 @@ Değişecek yerler (`index.html`):
 - `h1` (şarkı adı), `.artist`
 - `VIDEO_ID` (resmi YouTube klibi), Spotify ve Apple Music linkleri
 - “Şarkı” / “Sanatçı” metinleri ve footer’daki “Orijinal” satırı (cover değilse kaldır)
+- Footer’daki paylaşım tarihi: `<time class="posted" datetime="YYYY-MM-DD">` (hem `datetime` hem görünen metin)
 - Dizeler kullanıcıdan gelir; kendin yazma.
 
 Kurallar:
