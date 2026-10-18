@@ -20,6 +20,7 @@ Kullanıcı Türkçe konuşuyor; yanıtları Türkçe ver.
   - Ziyaretçi (anon) sadece onaylı yorumları okur ve onaysız yorum ekler; güncelleyemez, silemez, kendini onaylayamaz (RLS + kolon yetkileri, test edildi).
   - `index.html`’de sadece publishable key var (herkese açık olması normal). Secret/service_role key’i asla sayfaya koyma.
   - Onaylama: Supabase → Table Editor → `comments` → `approved` kutusunu işaretle. Silmek de oradan.
+  - E-posta bildirimi: yeni yorumda `comments_notify` tetikleyicisi Resend ile kullanıcının Gmail’ine mail atar (`supabase/notify.sql`, repoda adres yer tutucu). Resend anahtarı Supabase Vault’ta `resend_api_key`; anahtarı kullanıcı girer, sen girme/görme. Gönderim sonucu: `select * from net._http_response order by created desc`. Bildirim hatası yorum kaydını engellemez.
   - Ücretsiz Supabase projeleri uzun süre istek almazsa duraklatılabilir; her sayfa açılışı yorumları okuduğu için normalde aktif kalır. Yorumlar “yüklenemedi” derse önce projenin durumuna bak.
   - Tasarım kontrolü için `?onizleme` örnek yorumlarla açar (gerçek veriye dokunmaz).
 
