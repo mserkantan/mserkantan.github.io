@@ -48,6 +48,19 @@
     @media(max-width:380px){main{min-height:655px}.artist{margin-bottom:220px}.edition{letter-spacing:1px}}
     @media(prefers-reduced-motion:no-preference){.copy,header,footer{animation:appear 1.2s both}.artwork{animation:moonrise 1.7s both}footer{animation-delay:.15s}@keyframes appear{from{opacity:0}to{opacity:1}}@keyframes moonrise{from{opacity:0;filter:blur(8px)}to{opacity:1;filter:blur(0)}}}
       @keyframes appear{from{opacity:0}to{opacity:1}}
+      /* Mobilde şarkı ve şiir aynı kompozisyonda. */
+    @media(max-width:760px){
+      main{min-height:0;flex:0 0 auto;padding:38px 0 32px}
+      .eyebrow{margin-bottom:23px}
+      h1{font-size:clamp(72px,19vw,112px);margin-bottom:20px}
+      h1 .moon-word{margin-left:8vw;margin-top:6px}
+      .artist{margin-top:17px;margin-bottom:23px}
+      .artwork{width:clamp(190px,57vw,320px);right:-10vw;top:87px;opacity:.85}
+      .alt-links{margin-top:16px;gap:8px 18px}
+      .poem{padding:14px 0 58px;font-size:min(27px,5.1vw);line-height:1.5}
+      .poem::before{width:42px;margin-bottom:23px}
+      .poem .last-line{margin-top:23px;text-wrap:pretty}
+    }
   </style>
 </head>
 <body>
