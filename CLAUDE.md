@@ -12,10 +12,13 @@ Kullanıcı Türkçe konuşuyor; yanıtları Türkçe ver.
   - `@` için 4 A kaydı: 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
   - `www` için CNAME → `mserkantan.github.io`
   - “Email Security” ve “Domain Connect” preset’lerine dokunma.
+- HTTPS: Let’s Encrypt sertifikası 18 Ekim 2026’da geldi (`serkantan.org` + `www`), “Enforce HTTPS” açık. GitHub sertifikayı kendisi yeniliyor.
+  - Sertifika bir gün “1 of 3 — Certificate Requested”ta takılırsa: Pages’te custom domain’i `serkantan.org` ↔ `www.serkantan.org` arasında iki tur değiştirip `www`’da bırakmak işe yaradı. Aynı alanı silip eklemek yaramadı; sık deneme Let’s Encrypt limitlerine takılır.
+  - Pages’te domain değişince GitHub `CNAME` dosyasına commit atar; sonrasında yerel repoyu güncelle.
+- Ziyaretçi sayacı: GoatCounter (çerezsiz), `index.html` sonundaki script, panel `mserkantan.goatcounter.com`.
 
 ## Bekleyen işler
-1. **HTTPS:** GitHub → Settings → Pages’te “DNS Check in Progress” bitince sertifika gelecek. Gelince “Enforce HTTPS” kutusu işaretlenmeli (bu adım GitHub arayüzünden yapılır, kullanıcıya hatırlat).
-2. **Spotify linki:** Şu an `https://open.spotify.com/search/LP%20Harvest%20Moon` arama linki. Kullanıcı doğrudan şarkı linkini verirse `index.html` içindeki `.alt-links` bölümünde değiştir.
+1. **Spotify linki:** Şu an `https://open.spotify.com/search/LP%20Harvest%20Moon` arama linki. Kullanıcı doğrudan şarkı linkini verirse `index.html` içindeki `.alt-links` bölümünde değiştir.
 
 ## Site: “Bir ay, bir şarkı”
 Ana sayfa her ay tek bir şarkıyı öne çıkaran bir sayfa. Şu anki: **Ekim 2026 — LP, “Harvest Moon”** (Neil Young cover’ı, 16 Ekim 2026 single’ı).
