@@ -1,23 +1,12 @@
-# Site settings
-title: Tan's blog
-email: 
-description: "Hmm..."
-baseurl: ""
-url: "http://mserkantan.github.io"
-github_username:  "mserkantan"
-twitter_username: "mserkantan"
-
-# Build settings
-markdown: kramdown
-permalink: pretty
-
-highlighter: rouge
-kramdown:
-  input: GFM
-  auto_ids: true
-  syntax_highlighter: rouge
+# serkantan.org — GitHub Pages ayarları
+# Site düz HTML; Jekyll sadece ana sayfayı en yeni ayın kopyası olarak üretmek için kullanılıyor
+# (bkz. index.html → include_relative).
+title: serkantan.org
+url: "https://www.serkantan.org"
 
 # Yayına alınmayacak dosyalar
 exclude:
   - CLAUDE.md
+  - README.md
   - supabase
+  - .gitignore
