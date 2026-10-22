@@ -57,6 +57,8 @@
     .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
     .dates{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
     .dates input{border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 6px;font-size:12px}
+    .day-pick{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+    .day-pick select{font:inherit;font-size:13px;color:var(--ink);border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 6px;max-width:100%}
     .status{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
     .link-btn{border:0;background:none;padding:4px 2px;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
     .link-btn:hover{color:var(--copper);text-decoration-color:var(--copper)}
@@ -235,6 +237,21 @@
         <button class="link-btn" type="button" id="forgetBtn">Anahtarı unut</button>
       </div>
       <p class="warn" id="warn" hidden></p>
+
+      <!-- Günün ziyaretleri -->
+      <div class="chapter"><div><h2>Günün ziyaretleri</h2><p class="hint">Seçilen günün her gerçek ziyareti (8 sn ve üstü) ayrı satır, en yenisi üstte. Saat Türkiye saati; dakika, dil, saat dilimi, nereden ve sayfa bilgisi bu özellik eklendikten sonraki gelişlerde var; öncekilerde “–” ya da saat aralığı yazar. Gün listesi yukarıdaki tarih aralığından gelir.</p></div></div>
+      <section class="block" style="border-top:0;margin-top:0;padding-top:8px">
+        <div class="table-tools">
+          <label class="day-pick" for="visitDay">Gün <select id="visitDay"></select></label>
+          <span class="label" id="dayVisitsLabel"></span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Saat</th><th>Kimlik</th><th class="n">Kaçıncı geliş</th><th>Cihaz</th><th>Ekran</th><th>Tarayıcı</th><th>Dil</th><th>Saat dilimi</th><th>Nereden</th><th>Sayfa</th></tr></thead>
+            <tbody id="dayVisits"></tbody>
+          </table>
+        </div>
+      </section>
 
       <!-- Ziyaretçiler -->
       <div class="chapter"><div><h2>Ziyaretçiler</h2><p class="hint">Her tarayıcıya ilk gelişinde rastgele bir kimlik verilir; kim olduğu bilinmez, sadece aynı tarayıcının tekrar geldiği anlaşılır. Satıra tıklayınca geliş saatleri açılır.</p></div></div>

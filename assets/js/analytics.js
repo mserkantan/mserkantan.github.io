@@ -34,14 +34,41 @@
     var label = n === 1 ? 'ilk' : String(n);
     window.goatcounter.count({ path: 'donus/' + label, title: 'Kaçıncı ziyaret · ' + label, event: true });
 
-    // Başlık: "Ziyaretçi · <id> · <n>. geliş · <platform> · <genişlik>×<yükseklik> · <tarayıcı>" (panel buradan okur)
+    // Başlık (panel buradan okur, sıra önemli):
+    // "Ziyaretçi · <id> · <n>. geliş · <platform> · <genişlik>×<yükseklik> · <tarayıcı> · <dil> · <saat dilimi> · <nereden> · <sayfa> · <SS:DD>"
     var id = visitorId();
     if (id) {
       window.goatcounter.count({
         path: 'ziyaretci/' + id + '/' + n,
-        title: ['Ziyaretçi', id, n + '. geliş', p, screenSize(), browser()].join(' · '),
+        title: ['Ziyaretçi', id, n + '. geliş', p, screenSize(), browser(), language(), timeZone(), source(), page(), clock()]
+          .map(function (x) { return String(x).replace(/·/g, '-'); }).join(' · '),
         event: true
       });
+    }
+  }
+
+  function language() { return navigator.language || '?'; }
+
+  function timeZone() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || '?'; } catch (e) { return '?'; }
+  }
+
+  // Siteye hangi siteden gelindi (sadece alan adı); kendi sitemizden ya da bilgi yoksa "doğrudan"
+  function source() {
+    var ref = (document.referrer || '').match(/^https?:\/\/([^\/?#]+)/i);
+    if (!ref) return 'doğrudan';
+    var host = ref[1].toLowerCase().replace(/^www\./, '');
+    return host === location.hostname.replace(/^www\./, '') ? 'doğrudan' : host;
+  }
+
+  function page() { return location.pathname || '/'; }
+
+  // Gelişin Türkiye saatiyle saat:dakikası (GoatCounter sadece saatlik veri tutuyor)
+  function clock() {
+    try {
+      return new Intl.DateTimeFormat('tr-TR', { timeZone: 'Europe/Istanbul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(Date.now()));
+    } catch (e) {
+      return '?';
     }
   }
 

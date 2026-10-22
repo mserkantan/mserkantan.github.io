@@ -30,7 +30,7 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var key = '', range = '7', custom = null, filter = 'real', shift = null;
-  var loading = false, lastLoad = 0, loadId = 0, allVisitors = false, data = null;
+  var loading = false, lastLoad = 0, loadId = 0, allVisitors = false, data = null, visitDay = '';
 
   // --- Depolama ---
   function storeGet(name) {
@@ -223,8 +223,12 @@
   // hits listesini anlamlı gruplara ayırır
   // ziyaretci/<id>/<n>: her geliş ayrı yol (22 Ekim 2026 akşamından önceki kayıtlar ziyaretci/<id>); kimlik başına toplanır.
   function digest(hits, days) {
-    var d = { realTotal: 0, realBy: {}, realStats: [], realIds: [], retBy: {}, retTotal: 0, rawTotal: 0, rawStats: [], pages: [], events: [], visitors: [] };
+    var d = { realTotal: 0, realBy: {}, realStats: [], realIds: [], retBy: {}, retTotal: 0, rawTotal: 0, rawStats: [], pages: [], events: [], visitors: [], visits: [] };
     var byId = {};
+    function visitInfo(t) {
+      var get = function (i) { return t[i] && t[i] !== '?' ? t[i] : ''; };
+      return { platform: get(3), px: get(4), browser: get(5), lang: get(6), tz: get(7), source: get(8), page: get(9), time: /^\d\d:\d\d$/.test(t[10] || '') ? t[10] : '' };
+    }
     hits.forEach(function (h) {
       var c = classify(h.path);
       if (!h.event && !c) {
@@ -250,12 +254,18 @@
         var v = byId[id] || (byId[id] = { id: id, count: 0, stats: [], device: null, deviceN: -1 });
         v.count += h.count;
         v.stats = v.stats.concat(h.stats || []);
-        // başlık: "Ziyaretçi · id · n. geliş · platform · px · tarayıcı"; en son gelişinkini tut
-        var t = (h.title || '').split(' · ');
-        if (t.length >= 6 && nth > v.deviceN) {
-          v.device = { platform: t[3], px: t[4], browser: t[5] };
+        // başlık: "Ziyaretçi · id · n. geliş · platform · px · tarayıcı · dil · saat dilimi · nereden · sayfa · SS:DD"
+        // (eski kayıtlarda sadece ilk 3 ya da 6 parça var); cihazda en son gelişinkini tut
+        var t = (h.title || '').split(' · '), info = visitInfo(t);
+        if (info.platform && nth > v.deviceN) {
+          v.device = { platform: info.platform, px: info.px, browser: info.browser };
           v.deviceN = nth;
         }
+        // her geliş ayrı satır (Günün ziyaretleri); eski tek yollu kayıtta her saat dilimi bir satır
+        hourList(h.stats).forEach(function (x) {
+          if (days.indexOf(x.day) < 0) return;
+          for (var k = 0; k < (nth ? 1 : x.n); k++) d.visits.push({ id: id, n: nth, day: x.day, hour: x.hour, info: info, visitor: v });
+        });
       }
     });
     Object.keys(byId).forEach(function (id) {
@@ -505,6 +515,7 @@
       .filter(function (x) { return x.count > 0; }), { empty: 'Bu dönemde veri yok (22 Ekim 2026’dan beri ölçülüyor).' });
 
     renderPages(d);
+    renderDayVisits(d);
     renderVisitors(d);
 
     var warn = $('warn');
@@ -623,6 +634,51 @@
     var zCount = cur.visitors.length;
     if (zCount) items.push({ name: 'ziyaretci/… · ' + num(zCount) + ' farklı tarayıcı kimliği (aşağıda tek tek)', count: cur.visitors.reduce(function (s, v) { return s + v.count; }, 0), series: p.days.map(function (day) { return cur.visitors.filter(function (v) { return v.days.indexOf(day) > -1; }).length; }), expandable: false });
     drawRows($('pages'), items, { expand: expand, share: false, empty: 'Bu dönemde görüntülenme yok.' });
+  }
+
+  // Günün ziyaretleri: seçilen günün her gerçek ziyareti (8 sn+, kimlikli) bir satır, en yenisi üstte
+  function renderDayVisits(d) {
+    var sel = $('visitDay'), body = $('dayVisits'), visits = d.cur.visits;
+    var counts = {};
+    visits.forEach(function (x) { counts[x.day] = (counts[x.day] || 0) + 1; });
+    var days = Object.keys(counts).sort().reverse();
+    if (days.indexOf(visitDay) < 0) visitDay = days[0] || '';
+    sel.textContent = '';
+    days.forEach(function (day) {
+      var o = el('option', '', dayLong(day) + ' (' + num(counts[day]) + ')');
+      o.value = day;
+      o.selected = day === visitDay;
+      sel.appendChild(o);
+    });
+    sel.disabled = !days.length;
+    body.textContent = '';
+    var rows = visits.filter(function (x) { return x.day === visitDay; });
+    // dakikası biliniyorsa ona, bilinmiyorsa saat dilimine göre (ikisi de Türkiye saati)
+    function key(x) { return x.info.time || hh(x.hour < 0 ? 0 : x.hour) + ':00'; }
+    rows.sort(function (a, b) { var x = key(a), y = key(b); return x < y ? 1 : x > y ? -1 : (b.n || 0) - (a.n || 0); });
+    $('dayVisitsLabel').textContent = rows.length ? num(rows.length) + ' ziyaret, ' + num(Object.keys(rows.reduce(function (s, x) { s[x.id] = 1; return s; }, {})).length) + ' tarayıcı' : '';
+    if (!rows.length) {
+      var tr0 = el('tr'), td0 = el('td', 'empty', 'Bu dönemde kimlikli gerçek ziyaret yok.');
+      td0.colSpan = 10;
+      tr0.appendChild(td0);
+      body.appendChild(tr0);
+      return;
+    }
+    rows.forEach(function (x) {
+      var i = x.info, tr = el('tr');
+      var time = i.time || (x.hour >= 0 ? hh(x.hour) + ':00–' + hh(x.hour) + ':59' : '–');
+      tr.appendChild(el('td', '', time));
+      tr.appendChild(el('td', 'id', x.id));
+      tr.appendChild(el('td', 'n', x.n ? num(x.n) + '.' : '–'));
+      tr.appendChild(el('td', '', i.platform ? PLATFORM_SHORT[i.platform] || i.platform : '–'));
+      tr.appendChild(el('td', 'dev', i.px || '–'));
+      tr.appendChild(el('td', '', i.browser || '–'));
+      tr.appendChild(el('td', 'dev', i.lang || '–'));
+      tr.appendChild(el('td', 'dev', i.tz || '–'));
+      tr.appendChild(el('td', '', i.source || '–'));
+      tr.appendChild(el('td', 'dev', i.page || '–'));
+      body.appendChild(tr);
+    });
   }
 
   function renderVisitors(d) {
@@ -900,6 +956,10 @@
   $('moreVisitors').addEventListener('click', function () {
     allVisitors = true;
     if (data) renderVisitors(data);
+  });
+  $('visitDay').addEventListener('change', function () {
+    visitDay = this.value;
+    if (data) renderDayVisits(data);
   });
   $('onlyReturning').addEventListener('change', function () {
     allVisitors = false;
