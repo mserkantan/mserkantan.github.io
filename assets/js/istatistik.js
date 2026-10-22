@@ -26,11 +26,11 @@
     { page: 'languages', box: 'bLanguages', detail: false },
     { page: 'campaigns', box: 'bCampaigns', detail: true }
   ];
-  var VISITOR_ROWS = 25, STRIP_DAYS = 30, AUTO_MS = 5 * 60 * 1000;
+  var VISITOR_ROWS = 25, STRIP_DAYS = 30;
 
   var $ = function (id) { return document.getElementById(id); };
   var key = '', range = '7', custom = null, filter = 'real', shift = null;
-  var loading = false, lastLoad = 0, loadId = 0, allVisitors = false, data = null, visitDay = '';
+  var loading = false, loadId = 0, allVisitors = false, data = null, visitDay = '';
 
   // --- Depolama ---
   function storeGet(name) {
@@ -44,16 +44,26 @@
   }
 
   // --- API ---
-  var lastCall = 0;
+  // GoatCounter IP başına saatte 500 istek sınırı uyguluyor (ayrıca saniyede 4). Saatlik sınır dolunca
+  // yanıt "try again in 32m1.5s" der; o süre dolana kadar hiç istek atmıyoruz (pausedUntil).
+  var lastCall = 0, pausedUntil = 0;
   function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
   function fail(code, status) { var e = new Error(code); e.code = code; e.status = status; return e; }
+  // Go süre metni ("1h2m3.5s", "32m1.5s", "850ms") → milisaniye; okunamazsa 0
+  function goDuration(text) {
+    var m = /try again in ([0-9hms.]+)/.exec(text || ''), ms = 0;
+    if (!m) return 0;
+    m[1].replace(/([0-9.]+)(h|ms|m|s)/g, function (_, n, u) { ms += +n * { h: 3600e3, m: 60e3, s: 1e3, ms: 1 }[u]; });
+    return ms;
+  }
 
   async function api(path, params) {
+    if (Date.now() < pausedUntil) throw fail('rate');
     var url = new URL(BASE + path);
     Object.keys(params || {}).forEach(function (k) {
       if (params[k] !== undefined && params[k] !== '') url.searchParams.set(k, params[k]);
     });
-    for (var attempt = 0; attempt < 4; attempt++) {
+    for (var attempt = 0; attempt < 3; attempt++) {
       var gap = 300 - (Date.now() - lastCall);
       if (gap > 0) await wait(gap);
       lastCall = Date.now();
@@ -63,7 +73,13 @@
       } catch (e) {
         throw fail('network');
       }
-      if (res.status === 429) { await wait(1200 * (attempt + 1)); continue; }
+      if (res.status === 429) {
+        var after = goDuration(await res.text().catch(function () { return ''; }));
+        // kısa bekleme (saniyelik sınır) → bekleyip tekrar dene; uzun (saatlik sınır) → dur
+        if (after && after <= 5000) { await wait(after + 200); continue; }
+        pausedUntil = Date.now() + (after || 10 * 60e3);
+        throw fail('rate');
+      }
       if (res.status === 401 || res.status === 403) throw fail('auth', res.status);
       if (!res.ok) throw fail('http', res.status);
       return res.json();
@@ -159,7 +175,10 @@
       var dot = z.indexOf('.'), slash = z.indexOf('/');
       if (dot > -1 && slash > dot) z = z.slice(dot + 1);
       if (z) zone = z;
-    } catch (e) {}
+    } catch (e) {
+      // sınır/bağlantı/anahtar hatasında UTC varsayıp saatleri 3 saat kaydırma; sonraki yenilemede tekrar dene
+      if (e.code === 'rate' || e.code === 'network' || e.code === 'auth') throw e;
+    }
     var now = new Date();
     shift = Math.round((offsetMin(TR_ZONE, now) - offsetMin(zone, now)) / 60);
   }
@@ -203,7 +222,7 @@
       try {
         r = await api('/stats/hits', { start: start, end: end, limit: 100, exclude_paths: Object.keys(seen).join(',') });
       } catch (e) {
-        if (i === 0 || e.code === 'auth') throw e;
+        if (i === 0 || e.code === 'auth' || e.code === 'rate') throw e;
         partial = true;
         break;
       }
@@ -787,7 +806,7 @@
         var r = await api('/stats/' + b.page, { start: p.start, end: p.end, limit: 10, include_paths: inc });
         items = (r.stats || []).map(function (x) { return { name: niceName(b.page, x), count: x.count, id: x.id }; });
       } catch (e) {
-        if (e.code === 'auth') throw e;
+        if (e.code === 'auth' || e.code === 'rate') throw e;
       }
       if (id !== loadId) return;
       if (b.page === 'campaigns') $('campaignBlock').hidden = !(items && items.length);
@@ -833,7 +852,10 @@
     } else if (e.code === 'network') {
       setStatus('GoatCounter’a ulaşılamadı; bağlantını kontrol edip Yenile’ye bas.');
     } else if (e.code === 'rate') {
-      setStatus('GoatCounter çok sık istek dedi; biraz sonra Yenile’ye bas.');
+      var mins = Math.max(1, Math.ceil((pausedUntil - Date.now()) / 60e3));
+      setStatus(pausedUntil > Date.now()
+        ? 'GoatCounter’ın saatlik istek sınırı (500) doldu. ' + fmtTime.format(new Date(pausedUntil)) + ' civarı (~' + mins + ' dk) açılır; o zamana kadar panel istek atmaz, sonra Yenile’ye bas.'
+        : 'GoatCounter çok sık istek dedi; biraz sonra Yenile’ye bas.');
     } else {
       setStatus('Veri alınamadı (' + (e.status || e.message) + '). Yenile’ye bas.');
     }
@@ -854,7 +876,7 @@
         try {
           var pr = await allHits(p.prevStart, p.prevEnd);
           d.prev = digest(pr.hits, null);
-        } catch (e) { if (e.code === 'auth') throw e; }
+        } catch (e) { if (e.code === 'auth' || e.code === 'rate') throw e; }
       }
       if (id !== loadId) return;
       data = d;
@@ -863,7 +885,6 @@
       setStatus('Ayrıntılar yükleniyor…');
       await loadBreakdowns(d, id);
       if (id !== loadId) return;
-      lastLoad = Date.now();
       setStatus('Güncellendi ' + fmtTime.format(new Date()));
     } catch (e) {
       if (id === loadId) handleError(e);
@@ -966,11 +987,7 @@
     if (data) renderVisitors(data);
   });
 
-  function maybeAuto() {
-    if (key && !loading && document.visibilityState === 'visible' && Date.now() - lastLoad > AUTO_MS && range !== 'custom') refresh();
-  }
-  setInterval(maybeAuto, 30000);
-  document.addEventListener('visibilitychange', maybeAuto);
+  // Otomatik yenileme yok: GoatCounter'a istek sadece sayfa açılınca ve kullanıcı Yenile'ye / tarih aralığına basınca gider.
 
   var today = trDay(new Date());
   $('fromDate').max = today;
