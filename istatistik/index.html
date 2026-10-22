@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://mserkantan.goatcounter.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>İstatistik · serkantan.org</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='17' fill='%23ae633d'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Sitenin kâğıt/mürekkep/bakır paleti; panel: özet → günlük → saat/platform → dönüş/konum → sayfalar/kaynaklar → ziyaretçiler */
+    :root{color-scheme:light;--paper:#ede9e0;--paper-2:#e4dfd3;--ink:#292c27;--muted:#696b61;--copper:#965332;--copper-soft:#d9b8a3;--raw:#c3bdae;--line:#cbc7bb;--serif:'Cormorant Garamond',Georgia,serif;--sans:Manrope,Arial,sans-serif}
+    *{box-sizing:border-box}
+    [hidden]{display:none!important}
+    html{background:var(--paper)}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5}
+    a{color:inherit}button{font:inherit;color:inherit}
+    button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+    .wrap{max-width:1180px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,5vw,env(safe-area-inset-left,0px));padding-right:max(16px,5vw,env(safe-area-inset-right,0px))}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .signature{text-decoration:none;font-size:13px;font-weight:600;letter-spacing:-.4px}
+    .edition{display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .edition:before{content:"";width:5px;height:5px;background:var(--copper);border-radius:50%}
+    h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7vw,84px);line-height:.9;letter-spacing:-.04em;margin:44px 0 10px;text-wrap:balance}
+    h1 i{color:var(--copper);font-weight:400}
+    .lede{color:var(--muted);max-width:60ch;margin:0}
+    h2{font-family:var(--serif);font-weight:500;font-style:italic;font-size:26px;line-height:1.1;margin:0;color:var(--copper)}
+    .label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+    /* Anahtar formu */
+    .key-panel{margin-top:36px;max-width:620px;display:grid;gap:18px}
+    .key-panel ol{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--muted)}
+    .key-panel ol b{color:var(--ink);font-weight:600}
+    .key-form{display:grid;gap:14px}
+    .key-form input[type=password]{font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;border:0;border-bottom:1px solid #b9b4a6;border-radius:0;padding:8px 0;outline:none;width:100%}
+    .key-form input[type=password]:focus{border-bottom-color:var(--copper)}
+    .check{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+    .check input{accent-color:var(--copper);width:16px;height:16px}
+    .btn{justify-self:start;border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:999px;padding:10px 20px;font-size:12px;letter-spacing:.3px;cursor:pointer}
+    .btn:hover{background:var(--copper);border-color:var(--copper)}
+    .note{font-size:12px;color:var(--muted);margin:0}
+    .error{color:#a03a22;font-size:13px;margin:0}
+
+    /* Araç çubuğu */
+    .toolbar{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin:30px 0 8px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .chips{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 13px;font-size:12px;cursor:pointer;color:var(--muted)}
+    .chip:hover{border-color:var(--copper);color:var(--ink)}
+    .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .status{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .link-btn{border:0;background:none;padding:4px 2px;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+    .link-btn:hover{color:var(--copper);text-decoration-color:var(--copper)}
+    .warn{font-size:12px;color:#a03a22;margin:6px 0 0}
+
+    /* Özet */
+    .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:26px 0 8px}
+    .tile{padding:6px 22px 10px;border-left:1px solid var(--line);min-width:0}
+    .tile:first-child{border-left:0;padding-left:0}
+    .tile .num{display:block;font-family:var(--serif);font-size:clamp(44px,5vw,64px);line-height:1;font-weight:400;letter-spacing:-.03em;margin:10px 0 6px;font-variant-numeric:lining-nums tabular-nums}
+    .tile.main .num{color:var(--copper)}
+    .tile .sub{font-size:12px;color:var(--muted)}
+
+    /* Bölümler */
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px}
+    section.block{padding:30px 0 6px;border-top:1px solid var(--line);margin-top:28px;min-width:0}
+    .grid section.block{margin-top:28px}
+    .block-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .legend{display:flex;gap:14px;font-size:11px;color:var(--muted)}
+    .legend span{display:inline-flex;align-items:center;gap:6px}
+    .legend span:before{content:"";width:9px;height:9px;border-radius:2px;background:var(--raw)}
+    .legend .k-real:before{background:var(--copper)}
+
+    /* Sütun grafikleri */
+    .cols{display:flex;align-items:stretch;gap:2px;height:190px;position:relative;border-bottom:1px solid var(--ink)}
+    .cols.short{height:140px}
+    .col{flex:1;min-width:0;position:relative;border:0;background:none;padding:0;cursor:default;display:block}
+    .col:hover,.col:focus-visible,.col.on{background:rgba(150,83,50,.07)}
+    .col:focus-visible{outline-offset:0}
+    .bar{position:absolute;bottom:0;border-radius:2px 2px 0 0}
+    .bar.raw{left:8%;right:8%;background:var(--raw)}
+    .bar.real{left:24%;right:24%;background:var(--copper)}
+    .cols.short .bar.real{left:12%;right:12%}
+    .gridline{position:absolute;left:0;right:0;border-top:1px dashed var(--line);pointer-events:none}
+    .gridline span{position:absolute;right:0;top:-17px;font-size:10px;color:var(--muted);background:var(--paper);padding-left:4px;font-variant-numeric:tabular-nums}
+    .ticks{display:flex;gap:2px;margin-top:6px;height:16px}
+    .ticks span{flex:1;min-width:0;font-size:10px;color:var(--muted);text-align:center;white-space:nowrap;overflow:visible;font-variant-numeric:tabular-nums}
+    .readout{font-size:12px;color:var(--ink);margin-top:10px;min-height:18px;font-variant-numeric:tabular-nums}
+    .readout b{font-weight:600;color:var(--copper)}
+
+    /* Yatay çubuklar */
+    .rows{display:grid;gap:11px;margin:0;padding:0;list-style:none}
+    .row{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 5.5em;align-items:center;gap:12px;font-size:13px}
+    .row .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .row .track{height:8px;background:var(--paper-2);border-radius:4px;overflow:hidden}
+    .row .fill{display:block;height:100%;background:var(--copper);border-radius:4px}
+    .row .val{text-align:right;font-variant-numeric:tabular-nums}
+    .row .val small{color:var(--muted);font-size:11px;margin-left:4px}
+    .empty{color:var(--muted);font-size:13px;margin:0}
+
+    /* Ziyaretçi tablosu */
+    .table-scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+    th{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:0 12px 10px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+    td{padding:10px 12px 10px 0;border-bottom:1px solid var(--paper-2);white-space:nowrap;vertical-align:middle}
+    td.id{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
+    td.n{text-align:right;padding-right:20px}th.n{text-align:right;padding-right:20px}
+    .strip{display:flex;gap:2px}
+    .strip i{width:7px;height:14px;border-radius:2px;background:var(--paper-2)}
+    .strip i.on{background:var(--copper)}
+    .more{margin-top:14px}
+
+    footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:grid;gap:4px}
+    footer p{margin:0;max-width:80ch}
+
+    @media (max-width:860px){
+      .tiles{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}
+      .tile:nth-child(3){border-left:0;padding-left:0}
+      .grid{grid-template-columns:minmax(0,1fr)}
+      .status{margin-left:0;width:100%}
+    }
+    @media (max-width:420px){
+      .tile{padding:4px 12px 8px}
+      .row{grid-template-columns:minmax(0,7em) minmax(0,1fr) 5em}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="signature" href="/">serkantan.org</a>
+      <div class="edition">İstatistik</div>
+    </header>
+
+    <h1>Kim geldi, <i>kim kaldı</i></h1>
+    <p class="lede">GoatCounter verisi, canlı. Gerçek ziyaret: sayfanın en az 8 saniye açık kaldığı ziyaretler; link önizleme botları buraya girmez.</p>
+
+    <section class="key-panel" id="keyPanel" hidden>
+      <div>
+        <h2>GoatCounter anahtarı</h2>
+      </div>
+      <ol>
+        <li><b>mserkantan.goatcounter.com</b> → <b>Settings</b> → <b>API</b> → <b>New API key</b></li>
+        <li>İzin olarak sadece <b>Read statistics</b> seç, kaydet.</li>
+        <li>Oluşan anahtarı aşağıya yapıştır.</li>
+      </ol>
+      <form class="key-form" id="keyForm" novalidate>
+        <label class="label" for="keyInput">API anahtarı</label>
+        <input type="password" id="keyInput" autocomplete="off" spellcheck="false" required>
+        <label class="check"><input type="checkbox" id="rememberKey" checked> Bu cihazda hatırla</label>
+        <p class="error" id="keyError" hidden></p>
+        <button class="btn" type="submit">Verileri göster</button>
+      </form>
+      <p class="note">Anahtar sadece bu tarayıcıda saklanır ve yalnızca GoatCounter’a gönderilir; siteye veya repoya yazılmaz.</p>
+    </section>
+
+    <div id="dash" hidden>
+      <div class="toolbar">
+        <div class="chips" role="group" aria-label="Tarih aralığı">
+          <button class="chip" type="button" data-range="1" id="r1">Bugün</button>
+          <button class="chip" type="button" data-range="7" id="r7">Son 7 gün</button>
+          <button class="chip" type="button" data-range="30" id="r30">Son 30 gün</button>
+          <button class="chip" type="button" data-range="month" id="rmonth">Bu ay</button>
+          <button class="chip" type="button" data-range="all" id="rall">Tümü</button>
+        </div>
+        <span class="status" id="status" aria-live="polite"></span>
+        <button class="link-btn" type="button" id="refreshBtn">Yenile</button>
+        <button class="link-btn" type="button" id="forgetBtn">Anahtarı unut</button>
+      </div>
+      <p class="warn" id="warn" hidden></p>
+
+      <div class="tiles">
+        <div class="tile main"><span class="label">Gerçek ziyaret</span><span class="num" id="tReal">–</span><span class="sub">8 sn ve üstü açık kalan</span></div>
+        <div class="tile"><span class="label">Ham görüntülenme</span><span class="num" id="tRaw">–</span><span class="sub" id="tRawSub">botlar dahil</span></div>
+        <div class="tile"><span class="label">Farklı tarayıcı</span><span class="num" id="tUniq">–</span><span class="sub">22 Ekim 2026’dan beri ölçülüyor</span></div>
+        <div class="tile"><span class="label">Dönen ziyaret</span><span class="num" id="tRet">–</span><span class="sub" id="tRetSub">ilk / tekrar</span></div>
+      </div>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Gün gün</h2>
+          <div class="legend"><span class="k-real">Gerçek ziyaret</span><span>Ham görüntülenme</span></div>
+        </div>
+        <div class="cols" id="daily"></div>
+        <div class="ticks" id="dailyTicks"></div>
+        <div class="readout" id="dailyReadout"></div>
+      </section>
+
+      <div class="grid">
+        <section class="block">
+          <div class="block-head"><h2>Hangi saatte</h2><span class="label">Türkiye saati</span></div>
+          <div class="cols short" id="hours"></div>
+          <div class="ticks" id="hourTicks"></div>
+          <div class="readout" id="hourReadout"></div>
+        </section>
+        <section class="block">
+          <div class="block-head"><h2>Hangi cihazdan</h2><span class="label">gerçek ziyaret</span></div>
+          <ul class="rows" id="platforms"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h2>Kaçıncı gelişi</h2><span class="label">aynı tarayıcıdan</span></div>
+          <ul class="rows" id="returns"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h2>Nereden</h2><span class="label">gerçek ziyaret · ülke</span></div>
+          <ul class="rows" id="locations"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h2>Sayfalar</h2><span class="label">ham görüntülenme</span></div>
+          <ul class="rows" id="pages"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h2>Hangi linkten</h2><span class="label">tüm görüntülenmeler</span></div>
+          <ul class="rows" id="refs"></ul>
+        </section>
+      </div>
+
+      <section class="block">
+        <div class="block-head"><h2>Ziyaretçiler</h2><span class="label" id="visitorsLabel">tarayıcı başına rastgele kimlik</span></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Kimlik</th><th class="n">Ziyaret</th><th>İlk</th><th>Son</th><th>Günler</th></tr></thead>
+            <tbody id="visitors"></tbody>
+          </table>
+        </div>
+        <button class="link-btn more" type="button" id="moreVisitors" hidden>Tümünü göster</button>
+      </section>
+
+      <footer>
+        <p>Kaynak: GoatCounter API (mserkantan.goatcounter.com). Saatler ve günler Türkiye saatine göre.</p>
+        <p>“Farklı tarayıcı” ve “Kaçıncı gelişi” tarayıcıda saklanan sayıya dayanır: gizli pencere, site verisini silme ya da Safari’nin 7 günlük temizliği sonrası aynı kişi yeni görünür.</p>
+      </footer>
+    </div>
+  </div>
+  <script src="/assets/js/istatistik.js" defer></script>
+</body>
+</html>
