@@ -113,11 +113,29 @@
     setTimeout(tick, 1000);
   }
 
+  // Sekme açık kalıp sonra geri dönülürse (telefonda tarayıcıya dönmek, geri tuşuyla önbellekten açılış)
+  // sayfa yeniden yüklenmez; 1 dk'dan uzun arka planda kaldıysa yeni bir geliş için sayımı baştan başlat.
+  var hiddenAt = 0;
+  function leave() {
+    touch();
+    hiddenAt = Date.now();
+  }
+  function comeBack() {
+    if (!sent || !hiddenAt || Date.now() - hiddenAt < VISIT_GAP_MS) return;
+    hiddenAt = 0;
+    sent = false;
+    visibleMs = 0;
+    last = null;
+    tick();
+  }
+
   document.addEventListener('visibilitychange', function () {
     last = null;
-    if (document.visibilityState === 'hidden') touch();
+    if (document.visibilityState === 'hidden') leave();
+    else comeBack();
   });
-  window.addEventListener('pagehide', touch);
+  window.addEventListener('pagehide', leave);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) comeBack(); });
   tick();
 })();
   
