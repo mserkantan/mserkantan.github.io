@@ -2,9 +2,9 @@
 // GoatCounter'a platformla birlikte bir event gönderir (ör. "aktif/android").
 // Link tarayıcı botlar sayfayı açıp hemen kapattığı için bu sayıya girmez.
 //
-// Aynı anda kaçıncı ziyaret olduğunu da sayar ("donus/ilk", "donus/2", "donus/3", "donus/4+").
-// Tarayıcıda sadece tek bir sayı tutulur (localStorage "ziyaret-sayisi"); kimlik, tarih ya da
-// başka bir bilgi saklanmaz.
+// Ayrıca kaçıncı ziyaret olduğunu sayar ("donus/ilk", "donus/2", "donus/3", "donus/4+") ve
+// tarayıcıya bir kez üretilen rastgele bir kimlikle "ziyaretci/<id>" event'i gönderir.
+// localStorage'da sadece sayı ("ziyaret-sayisi") ve rastgele kimlik ("ziyaretci-id") tutulur.
 (function () {
   var NEEDED_MS = 8000, visibleMs = 0, last = null, sent = false;
 
@@ -30,6 +30,28 @@
     if (n) {
       var label = n === 1 ? 'ilk' : (n >= 4 ? '4+' : String(n));
       window.goatcounter.count({ path: 'donus/' + label, title: 'Kaçıncı ziyaret · ' + label, event: true });
+    }
+
+    var id = visitorId();
+    if (id) {
+      window.goatcounter.count({ path: 'ziyaretci/' + id, title: 'Ziyaretçi · ' + id, event: true });
+    }
+  }
+
+  // Bu tarayıcıya ait 8 karakterlik rastgele kimlik; ilk seferde üretilir. Depolama kapalıysa '' döner.
+  function visitorId() {
+    try {
+      var id = localStorage.getItem('ziyaretci-id');
+      if (!/^[a-z0-9]{8}$/.test(id || '')) {
+        var bytes = new Uint8Array(8), chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        crypto.getRandomValues(bytes);
+        id = '';
+        for (var i = 0; i < bytes.length; i++) id += chars[bytes[i] % chars.length];
+        localStorage.setItem('ziyaretci-id', id);
+      }
+      return id;
+    } catch (e) {
+      return '';
     }
   }
 
