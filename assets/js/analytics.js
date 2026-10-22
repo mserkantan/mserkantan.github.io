@@ -5,8 +5,8 @@
 // Ayrıca her yeni gelişte kaçıncı geliş olduğunu ("donus/ilk", "donus/2", "donus/3"…) ve
 // tarayıcıya bir kez üretilen rastgele kimlikle "ziyaretci/<id>/<n>" event'ini gönderir.
 // GoatCounter aynı ziyaretçinin aynı yolunu 8 saat içinde bir kez saydığı için her gelişin yolu farklı.
-// Son hareketten 1 dk geçmeden yapılan açılışlar (yenileme, ikinci sekme) aynı geliş sayılır.
-// localStorage'da sadece sayı ("ziyaret-sayisi"), son hareket zamanı ("son-ziyaret") ve rastgele kimlik ("ziyaretci-id") tutulur.
+// Bir önceki sayılan gelişten 1 dk geçmeden yapılan açılışlar (yenileme, ikinci sekme) aynı geliş sayılır.
+// localStorage'da sadece sayı ("ziyaret-sayisi"), son sayılan gelişin zamanı ("son-ziyaret") ve rastgele kimlik ("ziyaretci-id") tutulur.
 (function () {
   var NEEDED_MS = 8000, VISIT_GAP_MS = 60 * 1000, visibleMs = 0, last = null, sent = false;
 
@@ -106,25 +106,20 @@
     }
   }
 
-  // Yeni bir gelişse kaçıncı (en az 8 sn süren) geliş olduğunu döner; son hareketten 1 dk geçmediyse
-  // ya da depolama kapalıysa 0 döner ve hiçbir şey gönderilmez.
+  // Yeni bir gelişse kaçıncı (en az 8 sn süren) geliş olduğunu döner; bir önceki sayılan gelişten
+  // 1 dk geçmediyse ya da depolama kapalıysa 0 döner ve hiçbir şey gönderilmez.
+  // (Eskiden sayfadan her ayrılışta da zaman güncelleniyordu; açık bekleyip yenileyince yeni geliş sayılmıyordu.)
   function newVisitNumber() {
     try {
       var now = Date.now(), prev = parseInt(localStorage.getItem('son-ziyaret'), 10) || 0;
-      localStorage.setItem('son-ziyaret', String(now));
       if (prev && now - prev < VISIT_GAP_MS) return 0;
+      localStorage.setItem('son-ziyaret', String(now));
       var n = (parseInt(localStorage.getItem('ziyaret-sayisi'), 10) || 0) + 1;
       localStorage.setItem('ziyaret-sayisi', String(n));
       return n;
     } catch (e) {
       return 0;
     }
-  }
-
-  // Sayfadan ayrılırken son hareket zamanını güncelle; uzun kalıp kısa süre sonra dönen aynı gelişte sayılsın.
-  function touch() {
-    if (!sent) return;
-    try { localStorage.setItem('son-ziyaret', String(Date.now())); } catch (e) {}
   }
 
   function tick() {
@@ -144,7 +139,6 @@
   // sayfa yeniden yüklenmez; 1 dk'dan uzun arka planda kaldıysa yeni bir geliş için sayımı baştan başlat.
   var hiddenAt = 0;
   function leave() {
-    touch();
     hiddenAt = Date.now();
   }
   function comeBack() {
