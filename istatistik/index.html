@@ -236,6 +236,22 @@
       </div>
       <p class="warn" id="warn" hidden></p>
 
+      <!-- Ziyaretçiler -->
+      <div class="chapter"><div><h2>Ziyaretçiler</h2><p class="hint">Her tarayıcıya ilk gelişinde rastgele bir kimlik verilir; kim olduğu bilinmez, sadece aynı tarayıcının tekrar geldiği anlaşılır. Satıra tıklayınca geliş saatleri açılır.</p></div></div>
+      <section class="block" style="border-top:0;margin-top:0;padding-top:8px">
+        <div class="table-tools">
+          <label class="check"><input type="checkbox" id="onlyReturning"> Sadece birden fazla gelenler</label>
+          <span class="label" id="visitorsLabel"></span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Kimlik</th><th>Cihaz</th><th>Son geliş</th><th class="n">Ziyaret</th><th class="n">Gün</th><th>İlk</th><th>Günler</th></tr></thead>
+            <tbody id="visitors"></tbody>
+          </table>
+        </div>
+        <button class="link-btn more" type="button" id="moreVisitors" hidden>Tümünü göster</button>
+      </section>
+
       <div class="summary-wrap">
         <p class="summary" id="summary">Yükleniyor…</p>
       </div>
@@ -353,22 +369,6 @@
       <div class="chapter"><div><h2>Sayfalar ve event’ler</h2><p class="hint">GoatCounter’daki ana liste. Çizgi, seçili dönemdeki günlük gidişat. Satıra tıklayınca o sayfaya hangi linklerden gelindiği açılır.</p></div></div>
       <section class="block" style="border-top:0;margin-top:0;padding-top:8px">
         <ul class="rows" id="pages"></ul>
-      </section>
-
-      <!-- Ziyaretçiler -->
-      <div class="chapter"><div><h2>Ziyaretçiler</h2><p class="hint">Her tarayıcıya ilk gelişinde rastgele bir kimlik verilir; kim olduğu bilinmez, sadece aynı tarayıcının tekrar geldiği anlaşılır. Satıra tıklayınca geliş saatleri açılır.</p></div></div>
-      <section class="block" style="border-top:0;margin-top:0;padding-top:8px">
-        <div class="table-tools">
-          <label class="check"><input type="checkbox" id="onlyReturning"> Sadece birden fazla gelenler</label>
-          <span class="label" id="visitorsLabel"></span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead><tr><th>Kimlik</th><th>Cihaz</th><th>Son geliş</th><th class="n">Ziyaret</th><th class="n">Gün</th><th>İlk</th><th>Günler</th></tr></thead>
-            <tbody id="visitors"></tbody>
-          </table>
-        </div>
-        <button class="link-btn more" type="button" id="moreVisitors" hidden>Tümünü göster</button>
       </section>
 
       <details class="glossary">
