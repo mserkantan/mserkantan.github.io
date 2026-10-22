@@ -143,6 +143,7 @@
     tr.v{cursor:pointer}
     tr.v:hover td{background:rgba(150,83,50,.05)}
     td.id{font-family:var(--mono);font-size:12px}
+    td.dev{font-size:12px;color:var(--muted)}
     td.id .caret{display:inline-block;margin-right:6px;vertical-align:middle}
     tr.v[aria-expanded=true] .caret{transform:rotate(90deg);color:var(--copper)}
     td.n,th.n{text-align:right;padding-right:20px}
@@ -363,7 +364,7 @@
         </div>
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Kimlik</th><th class="n">Ziyaret</th><th class="n">Gün</th><th>İlk</th><th>Son</th><th>Günler</th></tr></thead>
+            <thead><tr><th>Kimlik</th><th>Cihaz</th><th>Son geliş</th><th class="n">Ziyaret</th><th class="n">Gün</th><th>İlk</th><th>Günler</th></tr></thead>
             <tbody id="visitors"></tbody>
           </table>
         </div>

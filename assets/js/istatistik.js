@@ -246,10 +246,16 @@
         d.retTotal += h.count;
         d.events.push(h);
       } else if (c.group === 'ziyaretci' && h.count > 0 && days) {
-        var id = c.name.split('/')[0];
-        var v = byId[id] || (byId[id] = { id: id, count: 0, stats: [] });
+        var id = c.name.split('/')[0], nth = +c.name.split('/')[1] || 0;
+        var v = byId[id] || (byId[id] = { id: id, count: 0, stats: [], device: null, deviceN: -1 });
         v.count += h.count;
         v.stats = v.stats.concat(h.stats || []);
+        // başlık: "Ziyaretçi · id · n. geliş · platform · px · tarayıcı"; en son gelişinkini tut
+        var t = (h.title || '').split(' · ');
+        if (t.length >= 6 && nth > v.deviceN) {
+          v.device = { platform: t[3], px: t[4], browser: t[5] };
+          v.deviceN = nth;
+        }
       }
     });
     Object.keys(byId).forEach(function (id) {
@@ -257,11 +263,19 @@
       v.days = vd;
       v.first = vd[0] || '';
       v.last = vd[vd.length - 1] || '';
+      // en son geliş: Türkiye saatine göre gün + saat (saatlik veri yoksa hour = -1)
+      v.lastAt = null;
+      hourList(v.stats).forEach(function (x) {
+        if (days.indexOf(x.day) < 0) return;
+        if (!v.lastAt || x.day > v.lastAt.day || (x.day === v.lastAt.day && x.hour > v.lastAt.hour)) v.lastAt = { day: x.day, hour: x.hour };
+      });
       d.visitors.push(v);
     });
     d.pages.sort(function (a, b) { return b.count - a.count; });
     d.events.sort(function (a, b) { return b.count - a.count; });
-    d.visitors.sort(function (a, b) { return a.last < b.last ? 1 : a.last > b.last ? -1 : b.count - a.count; });
+    // en son gelen en üstte (gün + saat)
+    function lastKey(v) { return v.lastAt ? v.lastAt.day + ' ' + (v.lastAt.hour < 0 ? '' : hh(v.lastAt.hour)) : v.last; }
+    d.visitors.sort(function (a, b) { var x = lastKey(a), y = lastKey(b); return x < y ? 1 : x > y ? -1 : b.count - a.count; });
     return d;
   }
 
@@ -622,7 +636,7 @@
       ? num(list.length) + ' tarayıcı' + (only ? ' (birden fazla gelen)' : '') : '';
     if (!rows.length) {
       var tr0 = el('tr'), td0 = el('td', 'empty', only ? 'Bu dönemde birden fazla gelen tarayıcı yok.' : 'Bu dönemde kimlikli ziyaret yok. (Kimlikler 22 Ekim 2026 akşamından beri gönderiliyor.)');
-      td0.colSpan = 6;
+      td0.colSpan = 7;
       tr0.appendChild(td0);
       body.appendChild(tr0);
     }
@@ -634,10 +648,13 @@
       idCell.appendChild(caret());
       idCell.appendChild(document.createTextNode(v.id));
       tr.appendChild(idCell);
+      var dev = v.device;
+      tr.appendChild(el('td', 'dev', dev ? [PLATFORM_SHORT[dev.platform] || dev.platform, dev.px, dev.browser].join(' · ') : '–'));
+      var la = v.lastAt;
+      tr.appendChild(el('td', '', la ? dayShort(la.day) + (la.hour >= 0 ? ' · ' + hh(la.hour) + ':00–' + hh(la.hour) + ':59' : '') : '–'));
       tr.appendChild(el('td', 'n', num(v.count)));
       tr.appendChild(el('td', 'n', num(v.days.length)));
       tr.appendChild(el('td', '', v.first ? dayShort(v.first) : '–'));
-      tr.appendChild(el('td', '', v.last ? dayShort(v.last) : '–'));
       var strip = el('div', 'strip'), set = {};
       v.days.forEach(function (x) { set[x] = 1; });
       stripDays.forEach(function (x) {
@@ -653,7 +670,7 @@
       var detail = el('tr', 'detail');
       detail.hidden = true;
       var dtd = el('td');
-      dtd.colSpan = 6;
+      dtd.colSpan = 7;
       var visits = el('div', 'visits');
       var inRange = {};
       d.p.days.forEach(function (x) { inRange[x] = 1; });

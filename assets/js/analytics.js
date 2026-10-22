@@ -34,10 +34,32 @@
     var label = n === 1 ? 'ilk' : String(n);
     window.goatcounter.count({ path: 'donus/' + label, title: 'Kaçıncı ziyaret · ' + label, event: true });
 
+    // Başlık: "Ziyaretçi · <id> · <n>. geliş · <platform> · <genişlik>×<yükseklik> · <tarayıcı>" (panel buradan okur)
     var id = visitorId();
     if (id) {
-      window.goatcounter.count({ path: 'ziyaretci/' + id + '/' + n, title: 'Ziyaretçi · ' + id + ' · ' + n + '. geliş', event: true });
+      window.goatcounter.count({
+        path: 'ziyaretci/' + id + '/' + n,
+        title: ['Ziyaretçi', id, n + '. geliş', p, screenSize(), browser()].join(' · '),
+        event: true
+      });
     }
+  }
+
+  function screenSize() {
+    var s = window.screen || {};
+    return s.width && s.height ? s.width + '×' + s.height : '?';
+  }
+
+  // Uygulama içi tarayıcılar (Instagram, Facebook) önce; Chrome/Edge/Opera UA'sında "Safari" de geçtiği için sıra önemli.
+  function browser() {
+    var ua = navigator.userAgent || '';
+    var list = [
+      [/Instagram/, 'Instagram'], [/FBAN|FBAV|FB_IAB/, 'Facebook'], [/SamsungBrowser/, 'Samsung Internet'],
+      [/YaBrowser/, 'Yandex'], [/OPR\/|OPiOS|Opera/, 'Opera'], [/Edg(A|iOS)?\//, 'Edge'],
+      [/Firefox|FxiOS/, 'Firefox'], [/CriOS|Chrome\//, 'Chrome'], [/Safari\//, 'Safari']
+    ];
+    for (var i = 0; i < list.length; i++) if (list[i][0].test(ua)) return list[i][1];
+    return 'diğer';
   }
 
   // Bu tarayıcıya ait 8 karakterlik rastgele kimlik; ilk seferde üretilir. Depolama kapalıysa '' döner.
