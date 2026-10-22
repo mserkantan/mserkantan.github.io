@@ -12,73 +12,88 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Sitenin kâğıt/mürekkep/bakır paleti; panel: özet → günlük → saat/platform → dönüş/konum → sayfalar/kaynaklar → ziyaretçiler */
-    :root{color-scheme:light;--paper:#ede9e0;--paper-2:#e4dfd3;--ink:#292c27;--muted:#696b61;--copper:#965332;--copper-soft:#d9b8a3;--raw:#c3bdae;--line:#cbc7bb;--serif:'Cormorant Garamond',Georgia,serif;--sans:Manrope,Arial,sans-serif}
+    /* Sitenin kâğıt/mürekkep/bakır paleti. Akış: özet cümle → sayılar → zaman → kim → ayrıntılar → sayfalar → ziyaretçiler → sözlük */
+    :root{color-scheme:light;--paper:#ede9e0;--paper-2:#e4dfd3;--ink:#292c27;--muted:#696b61;--copper:#965332;--raw:#c3bdae;--line:#cbc7bb;--up:#4f6b3c;--down:#a03a22;--serif:'Cormorant Garamond',Georgia,serif;--sans:Manrope,Arial,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
     *{box-sizing:border-box}
     [hidden]{display:none!important}
     html{background:var(--paper)}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5}
-    a{color:inherit}button{font:inherit;color:inherit}
-    button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+    a{color:inherit}button,input{font:inherit;color:inherit}
+    button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
     .wrap{max-width:1180px;margin:0 auto;padding-block:32px 48px;padding-left:max(16px,5vw,env(safe-area-inset-left,0px));padding-right:max(16px,5vw,env(safe-area-inset-right,0px))}
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
     .signature{text-decoration:none;font-size:13px;font-weight:600;letter-spacing:-.4px}
     .edition{display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
     .edition:before{content:"";width:5px;height:5px;background:var(--copper);border-radius:50%}
-    h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7vw,84px);line-height:.9;letter-spacing:-.04em;margin:44px 0 10px;text-wrap:balance}
+    h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7vw,84px);line-height:.9;letter-spacing:-.04em;margin:44px 0 14px;text-wrap:balance}
     h1 i{color:var(--copper);font-weight:400}
-    .lede{color:var(--muted);max-width:60ch;margin:0}
-    h2{font-family:var(--serif);font-weight:500;font-style:italic;font-size:26px;line-height:1.1;margin:0;color:var(--copper)}
+    .lede{color:var(--muted);max-width:62ch;margin:0}
+    .summary{font-family:var(--serif);font-size:clamp(21px,2.3vw,27px);line-height:1.45;max-width:46em;margin:0;color:var(--ink);text-wrap:pretty}
+    .summary b{font-weight:500;color:var(--copper)}
+    h2{font-family:var(--serif);font-weight:500;font-style:italic;font-size:26px;line-height:1.1;margin:0;color:var(--copper);text-wrap:balance}
+    h3{font-family:var(--serif);font-weight:500;font-style:italic;font-size:22px;line-height:1.1;margin:0;color:var(--ink)}
     .label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .hint{font-size:12.5px;color:var(--muted);margin:6px 0 16px;max-width:62ch}
 
     /* Anahtar formu */
     .key-panel{margin-top:36px;max-width:620px;display:grid;gap:18px}
     .key-panel ol{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--muted)}
     .key-panel ol b{color:var(--ink);font-weight:600}
     .key-form{display:grid;gap:14px}
-    .key-form input[type=password]{font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--ink);background:transparent;border:0;border-bottom:1px solid #b9b4a6;border-radius:0;padding:8px 0;outline:none;width:100%}
+    .key-form input[type=password]{font-family:var(--mono);font-size:13px;background:transparent;border:0;border-bottom:1px solid #b9b4a6;border-radius:0;padding:8px 0;outline:none;width:100%}
     .key-form input[type=password]:focus{border-bottom-color:var(--copper)}
-    .check{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
-    .check input{accent-color:var(--copper);width:16px;height:16px}
+    .check{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;cursor:pointer}
+    .check input{accent-color:var(--copper);width:15px;height:15px;margin:0}
     .btn{justify-self:start;border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:999px;padding:10px 20px;font-size:12px;letter-spacing:.3px;cursor:pointer}
     .btn:hover{background:var(--copper);border-color:var(--copper)}
     .note{font-size:12px;color:var(--muted);margin:0}
-    .error{color:#a03a22;font-size:13px;margin:0}
+    .error{color:var(--down);font-size:13px;margin:0}
 
     /* Araç çubuğu */
-    .toolbar{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin:30px 0 8px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-    .chips{display:flex;gap:6px;flex-wrap:wrap}
+    .toolbar{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin:28px 0 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
     .chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 13px;font-size:12px;cursor:pointer;color:var(--muted)}
     .chip:hover{border-color:var(--copper);color:var(--ink)}
     .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .dates{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+    .dates input{border:1px solid var(--line);background:transparent;border-radius:6px;padding:4px 6px;font-size:12px}
     .status{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
     .link-btn{border:0;background:none;padding:4px 2px;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
     .link-btn:hover{color:var(--copper);text-decoration-color:var(--copper)}
-    .warn{font-size:12px;color:#a03a22;margin:6px 0 0}
+    .warn{font-size:12px;color:var(--down);margin:8px 0 0}
+    .summary-wrap{padding:28px 0 4px}
 
-    /* Özet */
-    .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:26px 0 8px}
-    .tile{padding:6px 22px 10px;border-left:1px solid var(--line);min-width:0}
-    .tile:first-child{border-left:0;padding-left:0}
-    .tile .num{display:block;font-family:var(--serif);font-size:clamp(44px,5vw,64px);line-height:1;font-weight:400;letter-spacing:-.03em;margin:10px 0 6px;font-variant-numeric:lining-nums tabular-nums}
+    /* Sayılar */
+    .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 0;margin:26px 0 8px}
+    .tile{padding:4px 22px 6px;border-left:1px solid var(--line);min-width:0}
+    .tile:nth-child(3n+1){border-left:0;padding-left:0}
+    .tile .num{display:block;font-family:var(--serif);font-size:clamp(42px,4.6vw,60px);line-height:1;font-weight:400;letter-spacing:-.03em;margin:10px 0 6px;font-variant-numeric:lining-nums tabular-nums}
     .tile.main .num{color:var(--copper)}
-    .tile .sub{font-size:12px;color:var(--muted)}
+    .tile .sub{display:block;font-size:12px;color:var(--muted)}
+    .delta{display:inline-block;font-size:12px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+    .delta.up{color:var(--up)}.delta.down{color:var(--down)}.delta.flat{color:var(--muted)}
+    .delta small{font-weight:400;color:var(--muted)}
 
     /* Bölümler */
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px}
     section.block{padding:30px 0 6px;border-top:1px solid var(--line);margin-top:28px;min-width:0}
-    .grid section.block{margin-top:28px}
-    .block-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .block-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 12px;flex-wrap:wrap}
+    .chapter{margin-top:56px;padding-top:26px;border-top:1px solid var(--ink);display:flex;align-items:flex-end;justify-content:space-between;gap:14px 24px;flex-wrap:wrap}
+    .chapter h2{font-size:34px}
+    .chapter .hint{margin-bottom:0}
     .legend{display:flex;gap:14px;font-size:11px;color:var(--muted)}
     .legend span{display:inline-flex;align-items:center;gap:6px}
     .legend span:before{content:"";width:9px;height:9px;border-radius:2px;background:var(--raw)}
     .legend .k-real:before{background:var(--copper)}
+    .switch{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+    .switch button{border:0;background:none;border-radius:999px;padding:6px 14px;font-size:12px;color:var(--muted);cursor:pointer}
+    .switch button[aria-pressed=true]{background:var(--copper);color:var(--paper)}
 
     /* Sütun grafikleri */
-    .cols{display:flex;align-items:stretch;gap:2px;height:190px;position:relative;border-bottom:1px solid var(--ink)}
+    .cols{display:flex;align-items:stretch;gap:2px;height:190px;position:relative;border-bottom:1px solid var(--ink);margin-top:22px}
     .cols.short{height:140px}
-    .col{flex:1;min-width:0;position:relative;border:0;background:none;padding:0;cursor:default;display:block}
-    .col:hover,.col:focus-visible,.col.on{background:rgba(150,83,50,.07)}
+    .col{flex:1;min-width:0;position:relative;border:0;background:none;padding:0;cursor:pointer;display:block}
+    .col:hover,.col:focus-visible,.col.on{background:rgba(150,83,50,.08)}
     .col:focus-visible{outline-offset:0}
     .bar{position:absolute;bottom:0;border-radius:2px 2px 0 0}
     .bar.raw{left:8%;right:8%;background:var(--raw)}
@@ -87,45 +102,88 @@
     .gridline{position:absolute;left:0;right:0;border-top:1px dashed var(--line);pointer-events:none}
     .gridline span{position:absolute;right:0;top:-17px;font-size:10px;color:var(--muted);background:var(--paper);padding-left:4px;font-variant-numeric:tabular-nums}
     .ticks{display:flex;gap:2px;margin-top:6px;height:16px}
-    .ticks span{flex:1;min-width:0;font-size:10px;color:var(--muted);text-align:center;white-space:nowrap;overflow:visible;font-variant-numeric:tabular-nums}
-    .readout{font-size:12px;color:var(--ink);margin-top:10px;min-height:18px;font-variant-numeric:tabular-nums}
+    .ticks span{flex:1;min-width:0;font-size:10px;color:var(--muted);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .readout{font-size:12.5px;margin-top:10px;min-height:19px;font-variant-numeric:tabular-nums}
     .readout b{font-weight:600;color:var(--copper)}
 
+    /* Isı haritası */
+    .heat{display:grid;grid-template-columns:2.4em repeat(24,minmax(0,1fr));gap:2px;margin-top:16px;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .heat .c{height:20px;border-radius:2px;background:var(--paper-2)}
+    .heat .c.has{cursor:default}
+    .heat .rl{align-self:center}
+    .heat .hl{text-align:left;white-space:nowrap;overflow:visible;height:14px}
+    .heat-scale{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--muted)}
+    .heat-scale i{width:16px;height:10px;border-radius:2px;display:inline-block}
+
     /* Yatay çubuklar */
-    .rows{display:grid;gap:11px;margin:0;padding:0;list-style:none}
-    .row{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 5.5em;align-items:center;gap:12px;font-size:13px}
-    .row .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .row .track{height:8px;background:var(--paper-2);border-radius:4px;overflow:hidden}
+    .rows{display:grid;gap:4px;margin:16px 0 0;padding:0;list-style:none}
+    .rows.sub{margin:4px 0 10px 14px;padding-left:12px;border-left:1px solid var(--line);gap:2px}
+    .row{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 6.2em;align-items:center;gap:12px;font-size:13px;width:100%;border:0;background:none;padding:5px 4px;margin:0 -4px;text-align:left;border-radius:4px;width:calc(100% + 8px)}
+    button.row{cursor:pointer}
+    button.row:hover{background:rgba(150,83,50,.06)}
+    .row .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px;min-width:0}
+    .row .name span{overflow:hidden;text-overflow:ellipsis}
+    .caret{flex:none;width:9px;height:9px;color:var(--muted);transition:transform .2s}
+    .row[aria-expanded=true] .caret{transform:rotate(90deg);color:var(--copper)}
+    .row .track{display:block;height:8px;background:var(--paper-2);border-radius:4px;overflow:hidden}
     .row .fill{display:block;height:100%;background:var(--copper);border-radius:4px}
-    .row .val{text-align:right;font-variant-numeric:tabular-nums}
-    .row .val small{color:var(--muted);font-size:11px;margin-left:4px}
-    .empty{color:var(--muted);font-size:13px;margin:0}
+    .rows.sub .fill{background:#b98668}
+    .row .val{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .row .val small{color:var(--muted);font-size:11px;margin-left:5px}
+    .spark{display:block;width:100%;height:24px;color:var(--copper);overflow:visible}
+    .empty{color:var(--muted);font-size:13px;margin:0;padding:4px 0}
+    .sub-title{font-size:11px;color:var(--muted);padding:6px 0 2px}
 
     /* Ziyaretçi tablosu */
+    .table-tools{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
     .table-scroll{overflow-x:auto}
     table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
     th{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:0 12px 10px 0;border-bottom:1px solid var(--line);white-space:nowrap}
-    td{padding:10px 12px 10px 0;border-bottom:1px solid var(--paper-2);white-space:nowrap;vertical-align:middle}
-    td.id{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
-    td.n{text-align:right;padding-right:20px}th.n{text-align:right;padding-right:20px}
+    td{padding:9px 12px 9px 0;border-bottom:1px solid var(--paper-2);white-space:nowrap;vertical-align:middle}
+    tr.v{cursor:pointer}
+    tr.v:hover td{background:rgba(150,83,50,.05)}
+    td.id{font-family:var(--mono);font-size:12px}
+    td.id .caret{display:inline-block;margin-right:6px;vertical-align:middle}
+    tr.v[aria-expanded=true] .caret{transform:rotate(90deg);color:var(--copper)}
+    td.n,th.n{text-align:right;padding-right:20px}
     .strip{display:flex;gap:2px}
     .strip i{width:7px;height:14px;border-radius:2px;background:var(--paper-2)}
     .strip i.on{background:var(--copper)}
+    tr.detail td{white-space:normal;padding:4px 0 14px 22px;background:transparent}
+    .visits{display:flex;flex-wrap:wrap;gap:6px}
+    .visits span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px}
     .more{margin-top:14px}
+
+    /* Sözlük */
+    details.glossary{margin-top:56px;border-top:1px solid var(--ink);padding-top:20px}
+    details.glossary summary{cursor:pointer;font-family:var(--serif);font-style:italic;font-size:26px;color:var(--copper);list-style:none}
+    details.glossary summary::-webkit-details-marker{display:none}
+    details.glossary summary:after{content:" +";color:var(--muted)}
+    details.glossary[open] summary:after{content:" –"}
+    dl{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr);gap:12px 28px;margin:20px 0 0;max-width:900px}
+    dt{font-weight:600;font-size:13px}
+    dd{margin:0;color:var(--muted);font-size:13px}
 
     footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:grid;gap:4px}
     footer p{margin:0;max-width:80ch}
 
     @media (max-width:860px){
-      .tiles{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}
-      .tile:nth-child(3){border-left:0;padding-left:0}
+      .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tile:nth-child(3n+1){border-left:1px solid var(--line);padding-left:22px}
+      .tile:nth-child(2n+1){border-left:0;padding-left:0}
       .grid{grid-template-columns:minmax(0,1fr)}
       .status{margin-left:0;width:100%}
+      dl{grid-template-columns:minmax(0,1fr);gap:4px}
+      dd{margin-bottom:10px}
     }
-    @media (max-width:420px){
-      .tile{padding:4px 12px 8px}
-      .row{grid-template-columns:minmax(0,7em) minmax(0,1fr) 5em}
+    @media (max-width:440px){
+      .tile{padding:4px 12px 6px}
+      .tile:nth-child(2n+1){padding-left:0}
+      .row{grid-template-columns:minmax(0,8em) minmax(0,1fr) 5.6em;gap:8px}
+      .heat{grid-template-columns:2em repeat(24,minmax(0,1fr));gap:1px}
+      .heat .c{height:16px}
     }
+    @media (prefers-reduced-motion:reduce){.caret{transition:none}}
   </style>
 </head>
 <body>
@@ -136,12 +194,10 @@
     </header>
 
     <h1>Kim geldi, <i>kim kaldı</i></h1>
-    <p class="lede">GoatCounter verisi, canlı. Gerçek ziyaret: sayfanın en az 8 saniye açık kaldığı ziyaretler; link önizleme botları buraya girmez.</p>
+    <p class="lede">GoatCounter’dan canlı veri. “Gerçek ziyaret”: sayfanın en az 8 saniye açık kaldığı ziyaret; link önizleme botları ve hemen kapatanlar buna girmez.</p>
 
     <section class="key-panel" id="keyPanel" hidden>
-      <div>
-        <h2>GoatCounter anahtarı</h2>
-      </div>
+      <h2>GoatCounter anahtarı</h2>
       <ol>
         <li><b>mserkantan.goatcounter.com</b> → <b>Settings</b> → <b>API</b> → <b>New API key</b></li>
         <li>İzin olarak sadece <b>Read statistics</b> seç, kaydet.</li>
@@ -160,30 +216,47 @@
     <div id="dash" hidden>
       <div class="toolbar">
         <div class="chips" role="group" aria-label="Tarih aralığı">
-          <button class="chip" type="button" data-range="1" id="r1">Bugün</button>
-          <button class="chip" type="button" data-range="7" id="r7">Son 7 gün</button>
-          <button class="chip" type="button" data-range="30" id="r30">Son 30 gün</button>
-          <button class="chip" type="button" data-range="month" id="rmonth">Bu ay</button>
-          <button class="chip" type="button" data-range="all" id="rall">Tümü</button>
+          <button class="chip" type="button" data-range="1">Bugün</button>
+          <button class="chip" type="button" data-range="7">Son 7 gün</button>
+          <button class="chip" type="button" data-range="30">Son 30 gün</button>
+          <button class="chip" type="button" data-range="month">Bu ay</button>
+          <button class="chip" type="button" data-range="all">Tümü</button>
         </div>
+        <form class="dates" id="dateForm" novalidate>
+          <label for="fromDate">Tarih:</label>
+          <input type="date" id="fromDate" min="2026-10-01" required>
+          <span>–</span>
+          <input type="date" id="toDate" min="2026-10-01" required aria-label="Bitiş tarihi">
+          <button class="link-btn" type="submit">Göster</button>
+        </form>
         <span class="status" id="status" aria-live="polite"></span>
         <button class="link-btn" type="button" id="refreshBtn">Yenile</button>
         <button class="link-btn" type="button" id="forgetBtn">Anahtarı unut</button>
       </div>
       <p class="warn" id="warn" hidden></p>
 
-      <div class="tiles">
-        <div class="tile main"><span class="label">Gerçek ziyaret</span><span class="num" id="tReal">–</span><span class="sub">8 sn ve üstü açık kalan</span></div>
-        <div class="tile"><span class="label">Ham görüntülenme</span><span class="num" id="tRaw">–</span><span class="sub" id="tRawSub">botlar dahil</span></div>
-        <div class="tile"><span class="label">Farklı tarayıcı</span><span class="num" id="tUniq">–</span><span class="sub">22 Ekim 2026’dan beri ölçülüyor</span></div>
-        <div class="tile"><span class="label">Dönen ziyaret</span><span class="num" id="tRet">–</span><span class="sub" id="tRetSub">ilk / tekrar</span></div>
+      <div class="summary-wrap">
+        <p class="summary" id="summary">Yükleniyor…</p>
       </div>
+
+      <div class="tiles">
+        <div class="tile main"><span class="label">Gerçek ziyaret</span><span class="num" id="tReal">–</span><span class="sub">8 sn ve üstü açık kalan</span><span class="delta" id="dReal"></span></div>
+        <div class="tile"><span class="label">Ham görüntülenme</span><span class="num" id="tRaw">–</span><span class="sub">sayfanın her açılışı, botlar dahil</span><span class="delta" id="dRaw"></span></div>
+        <div class="tile"><span class="label">Kısa kalan / bot</span><span class="num" id="tBot">–</span><span class="sub" id="tBotSub">ham görüntülenmelerin içinde</span></div>
+        <div class="tile"><span class="label">Farklı tarayıcı</span><span class="num" id="tUniq">–</span><span class="sub" id="tUniqSub">aşağı yukarı kişi sayısı</span></div>
+        <div class="tile"><span class="label">Tekrar gelen</span><span class="num" id="tRet">–</span><span class="sub" id="tRetSub">gelişlerin içinde</span></div>
+        <div class="tile"><span class="label">En yoğun saat</span><span class="num" id="tPeak">–</span><span class="sub" id="tPeakSub">Türkiye saati</span></div>
+      </div>
+
+      <!-- Zaman -->
+      <div class="chapter"><div><h2>Ne zaman geldiler</h2><p class="hint">Tüm saatler Türkiye saati. Bir sütuna dokun ya da üstüne gel, sayısı altta yazar.</p></div></div>
 
       <section class="block">
         <div class="block-head">
-          <h2>Gün gün</h2>
+          <h3>Gün gün</h3>
           <div class="legend"><span class="k-real">Gerçek ziyaret</span><span>Ham görüntülenme</span></div>
         </div>
+        <p class="hint">Gri sütun sayfanın kaç kez açıldığı, bakır sütun bunlardan kaçının gerçek ziyaret olduğu. Aradaki fark bot ve hemen kapatanlar.</p>
         <div class="cols" id="daily"></div>
         <div class="ticks" id="dailyTicks"></div>
         <div class="readout" id="dailyReadout"></div>
@@ -191,47 +264,128 @@
 
       <div class="grid">
         <section class="block">
-          <div class="block-head"><h2>Hangi saatte</h2><span class="label">Türkiye saati</span></div>
+          <div class="block-head"><h3>Günün saatleri</h3><span class="label">gerçek ziyaret</span></div>
+          <p class="hint">Seçili dönemde her saat diliminde toplam kaç gerçek ziyaret oldu.</p>
           <div class="cols short" id="hours"></div>
           <div class="ticks" id="hourTicks"></div>
           <div class="readout" id="hourReadout"></div>
         </section>
         <section class="block">
-          <div class="block-head"><h2>Hangi cihazdan</h2><span class="label">gerçek ziyaret</span></div>
-          <ul class="rows" id="platforms"></ul>
-        </section>
-        <section class="block">
-          <div class="block-head"><h2>Kaçıncı gelişi</h2><span class="label">aynı tarayıcıdan</span></div>
-          <ul class="rows" id="returns"></ul>
-        </section>
-        <section class="block">
-          <div class="block-head"><h2>Nereden</h2><span class="label">gerçek ziyaret · ülke</span></div>
-          <ul class="rows" id="locations"></ul>
-        </section>
-        <section class="block">
-          <div class="block-head"><h2>Sayfalar</h2><span class="label">ham görüntülenme</span></div>
-          <ul class="rows" id="pages"></ul>
-        </section>
-        <section class="block">
-          <div class="block-head"><h2>Hangi linkten</h2><span class="label">tüm görüntülenmeler</span></div>
-          <ul class="rows" id="refs"></ul>
+          <div class="block-head"><h3>Haftanın günleri</h3><span class="label">gerçek ziyaret</span></div>
+          <p class="hint">Hangi gün daha çok geliniyor. Kısa dönemlerde her gün bir kez sayıldığı için dikkatli oku.</p>
+          <ul class="rows" id="weekdays"></ul>
         </section>
       </div>
 
       <section class="block">
-        <div class="block-head"><h2>Ziyaretçiler</h2><span class="label" id="visitorsLabel">tarayıcı başına rastgele kimlik</span></div>
+        <div class="block-head"><h3>Gün ve saat birlikte</h3><span class="label">gerçek ziyaret</span></div>
+        <p class="hint">Koyu kare = o gün o saatte daha çok ziyaret. Hangi akşamlar canlı, bir bakışta görünür.</p>
+        <div class="heat" id="heat"></div>
+        <div class="heat-scale" id="heatScale"></div>
+      </section>
+
+      <!-- Kim -->
+      <div class="chapter"><div><h2>Kim geldi</h2><p class="hint">Sitenin kendi ölçtüğü üç şey: cihaz türü, kaçıncı gelişi ve ülkesi.</p></div></div>
+
+      <div class="grid">
+        <section class="block">
+          <div class="block-head"><h3>Hangi cihazdan</h3><span class="label">gerçek ziyaret</span></div>
+          <p class="hint">Telefon mu bilgisayar mı. Sürüm ayrıntısı aşağıda “İşletim sistemi”nde.</p>
+          <ul class="rows" id="platforms"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h3>Kaçıncı gelişi</h3><span class="label">aynı tarayıcıdan</span></div>
+          <p class="hint">“2. geliş” = bu tarayıcı siteye ikinci kez geldi. 22 Ekim 2026’dan beri ölçülüyor.</p>
+          <ul class="rows" id="returns"></ul>
+        </section>
+      </div>
+
+      <!-- Ayrıntılar -->
+      <div class="chapter">
+        <div><h2>Ayrıntılar</h2><p class="hint">GoatCounter’ın topladığı her şey. Satıra tıklayınca alt kırılım açılır (sürüm, şehir, tam ekran genişliği…).</p></div>
+        <div class="switch" role="group" aria-label="Hangi ziyaretler">
+          <button type="button" data-filter="real">Gerçek ziyaretler</button>
+          <button type="button" data-filter="all">Tüm görüntülenmeler</button>
+        </div>
+      </div>
+      <p class="hint" id="filterHint"></p>
+
+      <div class="grid">
+        <section class="block">
+          <div class="block-head"><h3>Nereden</h3><span class="label">ülke → bölge</span></div>
+          <p class="hint">IP adresinden tahmin edilen konum. İrlanda, ABD (Oregon, Nebraska) ve İsveç çoğunlukla Meta’nın link önizleme botları.</p>
+          <ul class="rows" id="bLocations"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h3>Hangi linkten</h3><span class="label">kaynak site</span></div>
+          <p class="hint">Ziyaretçi siteye hangi sayfadaki linke tıklayarak geldi. “Doğrudan” = adres yazıldı, uygulama içinden açıldı ya da bilgi gelmedi.</p>
+          <ul class="rows" id="bRefs"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h3>Tarayıcı</h3><span class="label">→ sürüm</span></div>
+          <p class="hint">Instagram, WhatsApp gibi uygulamaların kendi içindeki tarayıcılar da ayrı görünür.</p>
+          <ul class="rows" id="bBrowsers"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h3>İşletim sistemi</h3><span class="label">→ sürüm</span></div>
+          <p class="hint">Android, iOS, Windows… Tıklayınca sürümleri görürsün.</p>
+          <ul class="rows" id="bSystems"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h3>Ekran boyutu</h3><span class="label">→ genişlik</span></div>
+          <p class="hint">Ekranın genişliği. Tam 2000 piksel çoğunlukla bot demek.</p>
+          <ul class="rows" id="bSizes"></ul>
+        </section>
+        <section class="block">
+          <div class="block-head"><h3>Dil</h3><span class="label">tarayıcı dili</span></div>
+          <p class="hint">Ziyaretçinin tarayıcısının ayarlı olduğu dil.</p>
+          <ul class="rows" id="bLanguages"></ul>
+        </section>
+        <section class="block" id="campaignBlock" hidden>
+          <div class="block-head"><h3>Kampanya</h3><span class="label">utm / ref</span></div>
+          <p class="hint">Linke eklenen <code>?utm_campaign=</code> ya da <code>?ref=</code> etiketleri.</p>
+          <ul class="rows" id="bCampaigns"></ul>
+        </section>
+      </div>
+
+      <!-- Sayfalar -->
+      <div class="chapter"><div><h2>Sayfalar ve event’ler</h2><p class="hint">GoatCounter’daki ana liste. Çizgi, seçili dönemdeki günlük gidişat. Satıra tıklayınca o sayfaya hangi linklerden gelindiği açılır.</p></div></div>
+      <section class="block" style="border-top:0;margin-top:0;padding-top:8px">
+        <ul class="rows" id="pages"></ul>
+      </section>
+
+      <!-- Ziyaretçiler -->
+      <div class="chapter"><div><h2>Ziyaretçiler</h2><p class="hint">Her tarayıcıya ilk gelişinde rastgele bir kimlik verilir; kim olduğu bilinmez, sadece aynı tarayıcının tekrar geldiği anlaşılır. Satıra tıklayınca geliş saatleri açılır.</p></div></div>
+      <section class="block" style="border-top:0;margin-top:0;padding-top:8px">
+        <div class="table-tools">
+          <label class="check"><input type="checkbox" id="onlyReturning"> Sadece birden fazla gelenler</label>
+          <span class="label" id="visitorsLabel"></span>
+        </div>
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Kimlik</th><th class="n">Ziyaret</th><th>İlk</th><th>Son</th><th>Günler</th></tr></thead>
+            <thead><tr><th>Kimlik</th><th class="n">Ziyaret</th><th class="n">Gün</th><th>İlk</th><th>Son</th><th>Günler</th></tr></thead>
             <tbody id="visitors"></tbody>
           </table>
         </div>
         <button class="link-btn more" type="button" id="moreVisitors" hidden>Tümünü göster</button>
       </section>
 
+      <details class="glossary">
+        <summary>Bu sayılar ne demek?</summary>
+        <dl>
+          <dt>Gerçek ziyaret</dt><dd>Sayfa en az 8 saniye ekranda açık kaldı. Botlar ve linki açıp hemen kapatanlar sayılmaz. Asıl bakılacak sayı bu.</dd>
+          <dt>Ham görüntülenme</dt><dd>Sayfanın açıldığı her an. WhatsApp/Instagram’da link paylaşılınca Meta’nın önizleme botları da sayfayı açar; onlar da buraya girer.</dd>
+          <dt>Kısa kalan / bot</dt><dd>Ham görüntülenmelerden gerçek ziyarete dönüşmeyenlerin oranı.</dd>
+          <dt>Farklı tarayıcı</dt><dd>Seçili dönemde gelen ayrı tarayıcı sayısı. Kabaca kişi sayısı; ama aynı kişi telefondan ve bilgisayardan gelirse iki sayılır. Gizli pencere, site verisini silme ve Safari’nin 7 günlük temizliği sonrası da yeni sayılır.</dd>
+          <dt>Tekrar gelen</dt><dd>Gelişlerin ne kadarı siteye daha önce gelmiş bir tarayıcıdan.</dd>
+          <dt>Önceki döneme göre</dt><dd>Aynı uzunluktaki bir önceki dönemle karşılaştırma. “Bugün” seçiliyse dünün aynı saatine kadarki kısımla karşılaştırılır.</dd>
+          <dt>Gerçek / Tüm görüntülenmeler</dt><dd>Ayrıntılar bölümündeki düğme. “Gerçek” seçiliyken tarayıcı, ülke vb. sadece gerçek ziyaretlerden hesaplanır; “Tüm” seçiliyken botlar da dahil olur. Botları görmek için “Tüm”e geç.</dd>
+          <dt>Event</dt><dd>Sitenin kendi gönderdiği işaretler: <code>aktif/…</code> (gerçek ziyaret, platformuyla), <code>donus/…</code> (kaçıncı geliş), <code>ziyaretci/…</code> (tarayıcı kimliği).</dd>
+        </dl>
+      </details>
+
       <footer>
-        <p>Kaynak: GoatCounter API (mserkantan.goatcounter.com). Saatler ve günler Türkiye saatine göre.</p>
-        <p>“Farklı tarayıcı” ve “Kaçıncı gelişi” tarayıcıda saklanan sayıya dayanır: gizli pencere, site verisini silme ya da Safari’nin 7 günlük temizliği sonrası aynı kişi yeni görünür.</p>
+        <p>Kaynak: GoatCounter API (mserkantan.goatcounter.com). Saatler ve günler Türkiye saatine göre. Veri her 5 dakikada bir kendiliğinden yenilenir.</p>
       </footer>
     </div>
   </div>
