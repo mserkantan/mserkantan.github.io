@@ -221,8 +221,10 @@
   }
 
   // hits listesini anlamlı gruplara ayırır
+  // ziyaretci/<id>/<n>: her geliş ayrı yol (22 Ekim 2026 akşamından önceki kayıtlar ziyaretci/<id>); kimlik başına toplanır.
   function digest(hits, days) {
     var d = { realTotal: 0, realBy: {}, realStats: [], realIds: [], retBy: {}, retTotal: 0, rawTotal: 0, rawStats: [], pages: [], events: [], visitors: [] };
+    var byId = {};
     hits.forEach(function (h) {
       var c = classify(h.path);
       if (!h.event && !c) {
@@ -239,13 +241,23 @@
         d.realIds.push(h.path_id);
         d.events.push(h);
       } else if (c.group === 'donus') {
-        d.retBy[c.name] = (d.retBy[c.name] || 0) + h.count;
+        var ret = /^\d+$/.test(c.name) && +c.name >= 4 ? '4+' : c.name;
+        d.retBy[ret] = (d.retBy[ret] || 0) + h.count;
         d.retTotal += h.count;
         d.events.push(h);
       } else if (c.group === 'ziyaretci' && h.count > 0 && days) {
-        var b = buckets(h.stats, days), vd = Object.keys(b.byDay).sort();
-        d.visitors.push({ id: c.name, count: h.count, days: vd, first: vd[0] || '', last: vd[vd.length - 1] || '', stats: h.stats });
+        var id = c.name.split('/')[0];
+        var v = byId[id] || (byId[id] = { id: id, count: 0, stats: [] });
+        v.count += h.count;
+        v.stats = v.stats.concat(h.stats || []);
       }
+    });
+    Object.keys(byId).forEach(function (id) {
+      var v = byId[id], vd = Object.keys(buckets(v.stats, days).byDay).sort();
+      v.days = vd;
+      v.first = vd[0] || '';
+      v.last = vd[vd.length - 1] || '';
+      d.visitors.push(v);
     });
     d.pages.sort(function (a, b) { return b.count - a.count; });
     d.events.sort(function (a, b) { return b.count - a.count; });
@@ -436,8 +448,8 @@
     $('tBot').textContent = cur.rawTotal ? '%' + pct(bot, cur.rawTotal) : '–';
     $('tBotSub').textContent = cur.rawTotal ? num(bot) + ' görüntülenme 8 saniyeyi bulmadı' : 'ham görüntülenmelerin içinde';
     $('tUniq').textContent = num(cur.visitors.length);
-    var multi = cur.visitors.filter(function (v) { return v.days.length > 1; }).length;
-    $('tUniqSub').textContent = cur.visitors.length ? num(multi) + ' tanesi birden fazla gün geldi' : 'kimlikler 22 Ekim 2026’dan beri';
+    var multi = cur.visitors.filter(function (v) { return v.count > 1; }).length;
+    $('tUniqSub').textContent = cur.visitors.length ? num(multi) + ' tanesi birden fazla kez geldi' : 'kimlikler 22 Ekim 2026’dan beri';
     var first = cur.retBy.ilk || 0, again = cur.retTotal - first;
     $('tRet').textContent = cur.retTotal ? '%' + pct(again, cur.retTotal) : '–';
     $('tRetSub').textContent = cur.retTotal ? num(again) + ' tekrar, ' + num(first) + ' ilk geliş' : 'henüz veri yok';
@@ -645,7 +657,15 @@
       var visits = el('div', 'visits');
       var inRange = {};
       d.p.days.forEach(function (x) { inRange[x] = 1; });
+      // aynı saate düşen gelişler (farklı geliş yollarından) tek satırda toplanır
+      var slots = [], slotOf = {};
       hourList(v.stats).filter(function (x) { return inRange[x.day]; }).forEach(function (x) {
+        var k = x.day + ' ' + hh(x.hour);
+        if (slotOf[k]) slotOf[k].n += x.n;
+        else slots.push(slotOf[k] = { day: x.day, hour: x.hour, n: x.n });
+      });
+      slots.sort(function (a, b) { return a.day < b.day ? -1 : a.day > b.day ? 1 : a.hour - b.hour; });
+      slots.forEach(function (x) {
         visits.appendChild(el('span', '', dayShort(x.day) + (x.hour >= 0 ? ' · ' + hh(x.hour) + ':00–' + hh(x.hour) + ':59' : '') + (x.n > 1 ? ' · ' + x.n + ' kez' : '')));
       });
       dtd.appendChild(visits);

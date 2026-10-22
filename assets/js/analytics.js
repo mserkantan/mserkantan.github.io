@@ -2,11 +2,13 @@
 // GoatCounter'a platformla birlikte bir event gönderir (ör. "aktif/android").
 // Link tarayıcı botlar sayfayı açıp hemen kapattığı için bu sayıya girmez.
 //
-// Ayrıca kaçıncı ziyaret olduğunu sayar ("donus/ilk", "donus/2", "donus/3", "donus/4+") ve
-// tarayıcıya bir kez üretilen rastgele bir kimlikle "ziyaretci/<id>" event'i gönderir.
-// localStorage'da sadece sayı ("ziyaret-sayisi") ve rastgele kimlik ("ziyaretci-id") tutulur.
+// Ayrıca her yeni gelişte kaçıncı geliş olduğunu ("donus/ilk", "donus/2", "donus/3"…) ve
+// tarayıcıya bir kez üretilen rastgele kimlikle "ziyaretci/<id>/<n>" event'ini gönderir.
+// GoatCounter aynı ziyaretçinin aynı yolunu 8 saat içinde bir kez saydığı için her gelişin yolu farklı.
+// Son hareketten 1 dk geçmeden yapılan açılışlar (yenileme, ikinci sekme) aynı geliş sayılır.
+// localStorage'da sadece sayı ("ziyaret-sayisi"), son hareket zamanı ("son-ziyaret") ve rastgele kimlik ("ziyaretci-id") tutulur.
 (function () {
-  var NEEDED_MS = 8000, visibleMs = 0, last = null, sent = false;
+  var NEEDED_MS = 8000, VISIT_GAP_MS = 60 * 1000, visibleMs = 0, last = null, sent = false;
 
   function platform() {
     var uad = navigator.userAgentData && navigator.userAgentData.platform;
@@ -26,15 +28,15 @@
     var p = platform();
     window.goatcounter.count({ path: 'aktif/' + p, title: 'Aktif ziyaretçi · ' + p, event: true });
 
-    var n = visitNumber();
-    if (n) {
-      var label = n === 1 ? 'ilk' : (n >= 4 ? '4+' : String(n));
-      window.goatcounter.count({ path: 'donus/' + label, title: 'Kaçıncı ziyaret · ' + label, event: true });
-    }
+    var n = newVisitNumber();
+    if (!n) return; // aynı gelişin devamı ya da depolama kapalı
+
+    var label = n === 1 ? 'ilk' : String(n);
+    window.goatcounter.count({ path: 'donus/' + label, title: 'Kaçıncı ziyaret · ' + label, event: true });
 
     var id = visitorId();
     if (id) {
-      window.goatcounter.count({ path: 'ziyaretci/' + id, title: 'Ziyaretçi · ' + id, event: true });
+      window.goatcounter.count({ path: 'ziyaretci/' + id + '/' + n, title: 'Ziyaretçi · ' + id + ' · ' + n + '. geliş', event: true });
     }
   }
 
@@ -55,15 +57,25 @@
     }
   }
 
-  // Bu tarayıcının kaçıncı (en az 8 sn süren) ziyareti; depolama kapalıysa 0 döner ve hiçbir şey gönderilmez.
-  function visitNumber() {
+  // Yeni bir gelişse kaçıncı (en az 8 sn süren) geliş olduğunu döner; son hareketten 1 dk geçmediyse
+  // ya da depolama kapalıysa 0 döner ve hiçbir şey gönderilmez.
+  function newVisitNumber() {
     try {
+      var now = Date.now(), prev = parseInt(localStorage.getItem('son-ziyaret'), 10) || 0;
+      localStorage.setItem('son-ziyaret', String(now));
+      if (prev && now - prev < VISIT_GAP_MS) return 0;
       var n = (parseInt(localStorage.getItem('ziyaret-sayisi'), 10) || 0) + 1;
       localStorage.setItem('ziyaret-sayisi', String(n));
       return n;
     } catch (e) {
       return 0;
     }
+  }
+
+  // Sayfadan ayrılırken son hareket zamanını güncelle; uzun kalıp kısa süre sonra dönen aynı gelişte sayılsın.
+  function touch() {
+    if (!sent) return;
+    try { localStorage.setItem('son-ziyaret', String(Date.now())); } catch (e) {}
   }
 
   function tick() {
@@ -79,7 +91,11 @@
     setTimeout(tick, 1000);
   }
 
-  document.addEventListener('visibilitychange', function () { last = null; });
+  document.addEventListener('visibilitychange', function () {
+    last = null;
+    if (document.visibilityState === 'hidden') touch();
+  });
+  window.addEventListener('pagehide', touch);
   tick();
 })();
   

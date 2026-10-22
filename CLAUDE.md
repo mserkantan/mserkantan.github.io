@@ -32,6 +32,7 @@ Kullanıcı Türkçe konuşuyor; yanıtları Türkçe ver.
   - Pages’te domain değişince GitHub `CNAME` dosyasına commit atar; sonrasında yerel repoyu güncelle.
 - Ziyaretçi sayacı: GoatCounter (çerezsiz), ay sayfasının sonundaki script, panel `mserkantan.goatcounter.com`.
   - `assets/js/analytics.js`: sayfa 8 sn görünür kalınca `aktif/android|ios|windows|mac|linux|diger` event’i gider. Meta’nın link tarayıcı botları (2000px ekran; IE/US-OR/SE/US-NE konumları) ham görüntülenmeleri şişiriyor; “gerçek ziyaretçi / platform / saat” soruları için bu event’lere bak.
+  - GoatCounter aynı ziyaretçinin (IP + tarayıcı) aynı yolunu 8 saat içinde bir kez sayar. Bu yüzden tekrar gelişler için her gelişe ayrı yol gider: `donus/ilk|2|3…` ve `ziyaretci/<rastgele id>/<n>` (22 Ekim 2026 akşamından önceki kayıtlar `ziyaretci/<id>`, `donus/4+`). Son hareketten 1 dk geçmeden açılış (yenileme, ikinci sekme) aynı geliş sayılır. `/istatistik/` paneli bunları kimlik başına toplar.
   - Export’lar UTC; Türkiye saati için +3. Kendi ziyaretlerini hariç tutmak için cihaz başına `/#toggle-goatcounter`.
 - Yorumlar: Supabase, proje “mserkantan's Project” (ref `lyjgwzatxasvwopmsect`, eu-west-1), tablo `public.comments`. Kurulum SQL’i `supabase/comments.sql` (Jekyll’de exclude).
   - Ziyaretçi (anon) sadece onaylı yorumları okur ve onaysız yorum ekler; güncelleyemez, silemez, kendini onaylayamaz (RLS + kolon yetkileri, test edildi).
