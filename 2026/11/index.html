@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f0ece3">
+  <meta name="description" content="Bir ay, bir şarkı. Kasım 2026 seçkisi: Pink Floyd — A Pillow of Winds.">
+  <title>A Pillow of Winds · Ayın Müziği</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M8 27a7 7 0 0 1 0-14 10 10 0 0 1 19-2 8 8 0 1 1 5 16Z' fill='%2370434a'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://www.serkantan.org/2026/11/">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <style>
+    /* Kasım 2026 — sayfaya özel stiller. site.css’teki Ekim düzenini bu sayfada geçersiz kılar. */
+    :root{--paper:#f0ece3;--ink:#30352e;--muted:#4e5048;--copper:#70434a;--line:#d5cfc2;background:var(--paper)}
+    ::selection{background:#d8b8ae;color:#30352e}
+    body.kasim{-webkit-font-smoothing:antialiased}
+    body.kasim a{text-decoration:none}body.kasim a:hover{color:var(--copper)}
+    body.kasim .page{max-width:1440px;min-height:0;display:block;padding:0 5.8%}
+    .k-atmo{position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(90deg,rgba(240,236,227,.54),rgba(240,236,227,.76) 48%,rgba(240,236,227,.58)),url('/assets/img/2026-11-bulutlar.webp');background-position:center top;background-size:cover;mix-blend-mode:multiply;opacity:.55;filter:saturate(.35)}
+    .k-grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.13;mix-blend-mode:multiply;z-index:1}
+    body.kasim header{flex-wrap:wrap;gap:8px 24px;min-height:96px;padding:12px 0;border-bottom:1px solid var(--line);animation:none}
+    .k-brand{display:flex;align-items:center;gap:12px;min-height:44px;font-size:15px;font-weight:600;letter-spacing:-.3px}
+    .k-brand svg{width:28px;height:24px;fill:none;stroke:var(--copper);stroke-width:1.2}
+    .k-nav{display:flex;align-items:center;gap:28px;font-size:14px}
+    .k-nav a,.k-nav button{display:flex;align-items:center;min-height:44px;padding:0;border:0;background:none;cursor:pointer;font:inherit;color:var(--muted)}
+    .k-nav a[aria-current]{flex-direction:column;justify-content:center;color:var(--ink)}
+    .k-nav a[aria-current]:after{content:"";width:4px;height:4px;border-radius:50%;background:var(--copper);margin-top:4px}
+    .k-nav button:hover{color:var(--copper)}
+    body.kasim main{display:block;min-height:0;padding:0;flex:none}
+    .k-hero{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:48px;padding:64px 3.4% 60px}
+    .k-copy{flex:1 1 440px;min-width:0}
+    .k-eyebrow{display:flex;align-items:center;gap:14px;margin:0 0 32px;font-size:12px;letter-spacing:2.4px;line-height:1.5;text-transform:uppercase;color:var(--muted)}
+    .k-eyebrow:before{content:"";width:25px;height:1px;background:var(--copper)}.k-eyebrow b{color:var(--copper);font-weight:600}
+    body.kasim h1{position:static;margin:0 0 30px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:clamp(64px,9.4vw,136px);line-height:.88;letter-spacing:-.05em}
+    body.kasim h1 span{display:block}body.kasim h1 em{display:block;font-weight:400;margin:8px 0 0 .3em}
+    .k-artist{margin:0 0 8px;font-size:14px;letter-spacing:2.6px;text-transform:uppercase}
+    .k-album{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:21px;color:var(--muted)}.k-album span{font-style:normal;margin:0 6px}
+    body.kasim .listen{margin-top:32px;padding:0;font-size:15px;letter-spacing:0;pointer-events:auto}
+    body.kasim .play-icon{width:48px;height:48px;border-color:#8a8d7d}
+    body.kasim .player{margin:22px 0 0}
+    body.kasim .alt-links{margin:18px 0 0;font-size:13px}body.kasim .alt-links a{color:var(--muted)}
+    .k-art{position:relative;flex:1 1 300px;max-width:400px;margin:0 auto;padding:16px 26px 20px 15px}
+    .k-art:before{content:"";position:absolute;top:3px;right:39px;bottom:51px;left:2px;border:1px solid #c5bdad;border-radius:49% 49% 0 0;transform:rotate(-4deg);pointer-events:none}
+    .k-frame{position:relative;aspect-ratio:4/5;width:100%;border-radius:48% 48% 2px 2px;overflow:hidden;background:#b8aea0}
+    .k-frame img{display:block;width:100%;height:100%;object-fit:cover;object-position:46% center}
+    .k-art-label{position:absolute;right:0;top:29%;writing-mode:vertical-rl;font-size:12px;letter-spacing:2px;color:var(--muted)}
+    .k-art figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-top:14px;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:18px;color:var(--muted)}
+    .k-art figcaption span:last-child{font-family:Manrope,Arial,sans-serif;font-style:normal;font-size:12px;letter-spacing:1.2px}
+    .k-poetry{padding:52px 8px 60px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+    .k-poetry-mark{display:block;color:var(--copper);font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:32px;line-height:1;margin-bottom:22px}
+    .k-poetry blockquote{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,3.3vw,46px);line-height:1.3;letter-spacing:-.02em;text-wrap:balance}
+    .k-poetry blockquote span{display:block}.k-poetry em{color:var(--copper)}
+    .k-poetry cite{display:block;margin-top:26px;font-style:normal;font-size:12px;letter-spacing:2px;color:var(--muted)}
+    .k-kunye{padding:64px 3.4% 72px}
+    .k-kunye-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;margin-bottom:40px}
+    .k-kunye-head h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:400;font-size:40px;line-height:1.1;letter-spacing:-.5px}
+    .k-kicker{margin:0 0 8px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .k-kunye-head .k-kicker{margin:0}
+    .k-cols{display:flex;flex-wrap:wrap;gap:40px 56px}
+    .k-cols article{flex:1 1 260px;min-width:0}
+    .k-cols article:before{content:"";display:block;width:32px;height:1px;background:var(--copper);margin-bottom:20px}
+    .k-cols h3{margin:0 0 14px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:30px;line-height:1.1;color:var(--copper)}
+    .k-cols p{margin:0 0 12px;font-size:15px;line-height:1.75}.k-cols .k-meta{margin:0;font-size:13px;color:var(--muted)}
+    body.kasim .shelf{width:100%;padding:40px 0 56px;border-top:1px solid var(--line)}
+    body.kasim .shelf-month{font-size:12px}
+    body.kasim footer{flex-wrap:wrap;gap:8px 20px;padding:24px 0 30px;font-size:13px;letter-spacing:0;color:var(--muted);animation:none}
+    body.kasim footer .posted{font-size:12px}
+    .k-dot{width:4px;height:4px;border-radius:50%;background:var(--copper);flex:none;margin-top:8px}
+    .k-about{width:min(460px,calc(100% - 38px));border:1px solid var(--line);background:var(--paper);padding:36px;color:var(--ink);box-shadow:0 20px 80px rgba(48,53,46,.2)}
+    .k-about::backdrop{background:rgba(48,53,46,.53);backdrop-filter:blur(5px)}
+    .k-about h2{margin:10px 0 20px;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:400;font-size:38px;line-height:1.1}
+    .k-about p{font-size:16px;line-height:1.8;margin:0 0 16px}
+    .k-about .k-sign{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:25px;color:var(--copper)}
+    .k-about .k-close{float:right;min-height:44px;padding:0 8px;border:0;background:none;cursor:pointer;font-size:14px;color:var(--ink)}
+    @media(prefers-reduced-motion:no-preference){.k-copy{animation:k-arrive 1.3s both}.k-art{animation:k-arrive 1.3s .1s both}@keyframes k-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+    @media(max-width:760px){
+      body.kasim .page{padding:0 5.8%}
+      body.kasim h1{font-size:clamp(56px,16.8vw,96px);margin-bottom:24px}
+      body.kasim .listen{font-size:15px}
+      body.kasim footer{font-size:13px;align-items:flex-start}
+      .k-hero{padding:40px 0 48px;gap:40px}
+      .k-kunye{padding:48px 0 56px}
+      .k-kunye-head h2{font-size:34px}
+    }
+  </style>
+</head>
+<body class="kasim" data-month="2026-11" data-video="Hgx267jVma0">
+  <div class="page">
+    <div class="k-atmo" aria-hidden="true"></div>
+    <svg class="k-grain" aria-hidden="true"><filter id="kagit"><feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#kagit)" opacity=".35"/></svg>
+    <header>
+      <a class="k-brand" href="/" aria-label="serkantan.org ana sayfa"><svg viewBox="0 0 32 26" aria-hidden="true"><path d="M6 19a5 5 0 0 1 0-10 8 8 0 0 1 15-2 6 6 0 1 1 4 12H6Z"/><path d="M9 23h13"/></svg><span>serkantan.org</span></a>
+      <nav class="k-nav" aria-label="Ana menü"><a href="#ayin-sarkisi" aria-current="page">Ayın şarkısı</a><a href="#shelf">Arşiv</a><button type="button" id="about-open" aria-haspopup="dialog">Hakkında</button></nav>
+    </header>
+    <main>
+      <section class="k-hero" id="ayin-sarkisi" aria-labelledby="song-title">
+        <div class="k-copy">
+          <p class="k-eyebrow"><b>11 / 26</b><span>Kasımın şarkısı</span></p>
+          <h1 id="song-title" lang="en"><span>A Pillow</span><em>of Winds</em></h1>
+          <p class="k-artist" lang="en">Pink Floyd</p>
+          <p class="k-album">Meddle <span aria-hidden="true">·</span> 1971</p>
+          <button class="listen" id="listen" type="button" aria-label="Şarkıyı çal" aria-pressed="false"><span class="play-icon" aria-hidden="true"><svg class="i-play" viewBox="0 0 12 14"><path d="M1 1 11 7 1 13Z"/></svg><svg class="i-pause" viewBox="0 0 12 14"><path d="M1 1h3.5v12H1zM7.5 1H11v12H7.5z"/></svg></span><span class="listen-label">Şarkıyı çal</span></button>
+          <div class="player" id="player-wrap" hidden><div id="yt"></div></div>
+          <p class="alt-links"><a href="https://www.youtube.com/watch?v=Hgx267jVma0" target="_blank" rel="noopener noreferrer">YouTube’da aç ↗</a><a href="https://open.spotify.com/search/Pink%20Floyd%20A%20Pillow%20of%20Winds" target="_blank" rel="noopener noreferrer">Spotify’da dinle ↗</a><a href="https://music.apple.com/us/search?term=Pink%20Floyd%20A%20Pillow%20of%20Winds" target="_blank" rel="noopener noreferrer">Apple Music’te dinle ↗</a></p>
+        </div>
+        <figure class="k-art">
+          <div class="k-frame"><img src="/assets/img/2026-11-bulutlar.webp" alt="Soluk pembe ve beyaz bulutlardan oluşan, yağlıboya dokulu bir sonbahar göğü." width="1000" height="1000" fetchpriority="high"></div>
+          <span class="k-art-label" aria-hidden="true">BİR AY, BİR ŞARKI — NO. 02</span>
+          <figcaption><span>Rüzgârın götürdüğü yere.</span><span>KASIM ’26</span></figcaption>
+        </figure>
+      </section>
+      <section class="k-poetry" aria-label="Aya eşlik eden dizeler">
+        <span class="k-poetry-mark" aria-hidden="true">“</span>
+        <blockquote><span>Bulutlar vardır, <em>pembeden, beyazdan</em></span><span>Mevsim sonbahardır <em>sessiz ve taze.</em></span></blockquote>
+        <cite>TURGUT UYAR</cite>
+      </section>
+      <section class="k-kunye" aria-labelledby="kunye-title">
+        <div class="k-kunye-head"><h2 id="kunye-title">Şarkı, sanatçı, şair.</h2><p class="k-kicker">Bu ayın künyesi</p></div>
+        <div class="k-cols">
+          <article>
+            <p class="k-kicker">Şarkı</p>
+            <h3 lang="en">A Pillow of Winds</h3>
+            <p>Meddle’ın ikinci parçası: sert açılış “One of These Days”in ardından gelen sakin, akustik bir şarkı. Sözler Roger Waters’ın, müzik David Gilmour’la ortak; vokalde Gilmour var.</p>
+            <p>Adını, Waters ile Nick Mason’ın eşleriyle oynadığı mahjong oyunundaki bir sayı kombinasyonundan alıyor. Grup şarkıyı hiç canlı çalmadı.</p>
+            <p class="k-meta">Gilmour / Waters · 5:13</p>
+          </article>
+          <article>
+            <p class="k-kicker">Sanatçı</p>
+            <h3 lang="en">Pink Floyd</h3>
+            <p>1965’te Londra’da kurulan İngiliz grup. Meddle döneminde kadroda David Gilmour, Roger Waters, Richard Wright ve Nick Mason vardı.</p>
+            <p>Albüm İngiltere’de 5 Kasım 1971’de yayımlandı; yani bu, doğuştan bir Kasım şarkısı.</p>
+            <p class="k-meta">Meddle · Harvest, 1971</p>
+          </article>
+          <article>
+            <p class="k-kicker">Şair</p>
+            <h3>Turgut Uyar</h3>
+            <p>1927’de Ankara’da doğdu, 1985’te İstanbul’da öldü. İkinci Yeni’nin önde gelen şairlerinden.</p>
+            <p>İlk görev yeri, o yıllarda Kars’a bağlı olan Posof’tu (bugün Ardahan). 1948’de, 21 yaşında personel subayı olarak gitti ve dört yıla yakın kaldı; ilk kitabı Arz-ı Hal bu yıllarda, 1949’da çıktı.</p>
+            <p>Tütünler Islak ile Yeditepe Şiir Armağanı’nı, Kayayı Delen İncir ile Behçet Necatigil Şiir Ödülü’nü aldı. Bütün şiirleri Büyük Saat’te toplandı.</p>
+            <p class="k-meta">1927–1985 · Posof, Terme, Ankara · İkinci Yeni</p>
+          </article>
+        </div>
+      </section>
+    </main>
+    <dialog class="comments-dialog" id="yorumlar" aria-labelledby="comments-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-head"><h2 id="comments-title">Yorumlar</h2><span class="comments-count" id="comments-count"></span><button class="close-dialog" type="button" aria-label="Kapat"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button></div>
+      <div class="dialog-body">
+      <p class="comments-intro">Bu şarkı sende ne uyandırdı?</p>
+      <form class="comment-form" id="comment-form" novalidate>
+        <div class="field"><label for="c-name">Adın</label><input id="c-name" name="name" type="text" maxlength="40" autocomplete="name" placeholder="Takma ad da olur" required></div>
+        <div class="field"><label for="c-body">Yorumun</label><textarea id="c-body" name="body" maxlength="600" rows="3" placeholder="Bir iki cümle yeter…" required></textarea><div class="field-meta" id="c-left" aria-live="polite"></div></div>
+        <div class="hp" aria-hidden="true"><label for="c-site">Web siten</label><input id="c-site" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <div class="form-foot">
+          <p class="form-note">Yorumlar onaylandıktan sonra görünür. E-posta ya da hesap istemiyoruz; adın ve yorumun herkese açık olur.</p>
+          <button class="send" type="submit" disabled><span class="play-icon" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M1 7h11M7.5 2.5 12 7l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span><span>Gönder</span></button>
+        </div>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+      <ol class="comment-list" id="comment-list"></ol>
+      </div>
+    </dialog>
+    <nav class="shelf" id="shelf" aria-labelledby="shelf-title" hidden>
+      <div class="shelf-head"><h2 id="shelf-title">Tüm aylar</h2><div class="shelf-nav"><button class="shelf-prev" type="button" aria-label="Önceki"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M8 1 3 6l5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></button><button class="shelf-next" type="button" aria-label="Sonraki"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 1 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></button></div></div>
+      <div class="shelf-track"></div>
+    </nav>
+    <footer><p class="footer-left"><span class="k-dot" aria-hidden="true"></span><span>Bir ay, bir şarkı. Biraz da his.<time class="posted" datetime="2026-11-01">1 Kasım 2026’da paylaşıldı</time></span></p><p>Bir sonraki buluşma, Aralık.</p></footer>
+  </div>
+  <dialog class="k-about" id="hakkinda" aria-labelledby="about-title"><button class="k-close" type="button" id="about-close">Kapat ×</button><h2 id="about-title">Küçük bir müzik molası.</h2><p>Her ay bir şarkı, ona eşlik eden birkaç dize. Burada birikenler; mevsimlerden, seslerden ve hislerden küçük notlar.</p><p class="k-sign">Serkan</p></dialog>
+  <button class="comments-fab" id="open-comments" type="button" aria-haspopup="dialog" aria-controls="yorumlar" aria-label="Yorumlar" title="Yorumlar"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11v7h-6l-3.5 3v-3h-1.5z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span class="fab-count" id="oc-count" aria-hidden="true"></span></button>
+
+  <script>
+    // Hakkında penceresi (Escape ile kapanır: <dialog> varsayılanı). Kapanınca odak Hakkında’ya döner.
+    (function () {
+      var d = document.getElementById('hakkinda'), open = document.getElementById('about-open');
+      if (!d || !open || !d.showModal) return;
+      open.addEventListener('click', function () { d.showModal(); });
+      document.getElementById('about-close').addEventListener('click', function () { d.close(); });
+      d.addEventListener('click', function (e) {
+        if (e.target !== d) return;
+        var r = d.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) d.close();
+      });
+      d.addEventListener('close', function () { open.focus(); });
+    })();
+  </script>
+  <script src="/assets/js/player.js" defer></script>
+  <script src="/assets/js/comments.js" defer></script>
+  <script src="/assets/js/shelf.js" defer></script>
+  <!-- Ziyaretçi sayacı: GoatCounter (çerezsiz) -->
+  <script data-goatcounter="https://mserkantan.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <script src="/assets/js/analytics.js" defer></script>
+</body>
+</html>

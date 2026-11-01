@@ -11,7 +11,7 @@
   function setPlaying(on) {
     btn.classList.toggle('playing', on);
     btn.setAttribute('aria-pressed', on);
-    btn.setAttribute('aria-label', on ? 'Harvest Moon’u duraklat' : 'Harvest Moon’u çal');
+    btn.setAttribute('aria-label', on ? 'Şarkıyı duraklat' : 'Şarkıyı çal');
     label.textContent = on ? 'Duraklat' : 'Şarkıyı çal';
   }
 

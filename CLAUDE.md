@@ -47,9 +47,11 @@ Kullanıcı Türkçe konuşuyor; yanıtları Türkçe ver.
 Şu an yok.
 
 ## Site: “Bir ay, bir şarkı”
-Ana sayfa her ay tek bir şarkıyı öne çıkaran bir sayfa. Şu anki: **Ekim 2026 — LP, “Harvest Moon”** (Neil Young cover’ı, 16 Ekim 2026 single’ı).
+Ana sayfa her ay tek bir şarkıyı öne çıkaran bir sayfa. Şu anki: **Kasım 2026 — Pink Floyd, “A Pillow of Winds”** (Meddle, 1971; dizeler Turgut Uyar). Önceki: Ekim 2026 — LP, “Harvest Moon”.
 
-Tasarım (kullanıcının kendi tasarımı, koru):
+Kasım 2026 sayfası (`2026/11/`) kullanıcının ayrı tasarımı: bulut resmi (`/assets/img/2026-11-bulutlar.webp`), gül vurgu `#70434a`, kemerli resim çerçevesi, Hakkında penceresi, “Şarkı, sanatçı, şair” künyesi. Sayfaya özel stiller `<head>`’deki `<style>` içinde, `body.kasim` ile site.css’in Ekim düzenini geçersiz kılıyor; site.css’e dokunmadan. Küçük yazılar en az 12px, gri/gül metinler zeminde en az 5:1 kontrast.
+
+Ekim 2026 tasarımı (kullanıcının kendi tasarımı, koru):
 - Kâğıt dokulu açık zemin `#ede9e0`, mürekkep `#292c27`, bakır vurgu `#965332`
 - Fontlar: Cormorant Garamond (başlık, şiir) + Manrope (metin)
 - Sağda SVG ile çizilmiş bakır tonlu ay; mobilde başlığın altına iniyor

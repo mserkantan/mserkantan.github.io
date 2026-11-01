@@ -5,6 +5,24 @@
     "label": "Ekim 2026",
     "title": "Harvest Moon",
     "artist": "LP",
-    "moon": ["#edc18b", "#d59b65", "#b67347", "#8b4c32"]
+    "moon": [
+      "#edc18b",
+      "#d59b65",
+      "#b67347",
+      "#8b4c32"
+    ]
+  },
+  {
+    "id": "2026-11",
+    "url": "/2026/11/",
+    "label": "Kasım 2026",
+    "title": "A Pillow of Winds",
+    "artist": "Pink Floyd",
+    "moon": [
+      "#f7ebe2",
+      "#e9c6bd",
+      "#c4999a",
+      "#8a6a70"
+    ]
   }
 ]
