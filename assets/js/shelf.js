@@ -52,10 +52,14 @@
     return a;
   }
 
+  // Kaydıracak bir şey yoksa (iki ok da pasif) okları tümden gizle.
   function updateArrows() {
     const max = track.scrollWidth - track.clientWidth - 2;
-    shelf.querySelector('.shelf-prev').disabled = track.scrollLeft <= 2;
-    shelf.querySelector('.shelf-next').disabled = track.scrollLeft >= max;
+    const prev = shelf.querySelector('.shelf-prev');
+    const next = shelf.querySelector('.shelf-next');
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= max;
+    shelf.querySelector('.shelf-nav').hidden = prev.disabled && next.disabled;
   }
 
   fetch('/data/months.json', { cache: 'no-cache' })
